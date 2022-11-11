@@ -1,5 +1,3 @@
-
-
 use cs3380;
 
 drop table if exists team;
