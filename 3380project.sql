@@ -16,27 +16,6 @@ drop table if exists signed;
 drop table if exists players;
 drop table if exists play;
 
-
-create table team(
-   teamID integer primary key,
-   abbreviation text not null,
-   nickname text not null,
-   yearFounded integer not null,
-   arenaName text not null,
-   arenaCapacity integer,
-   dleagueAffiliation text not null
-   FOREIGN key ("cityID") REFERENCES "city" ("cid")
-   FOREIGN key ("conferenceID") REFERENCES "conference" ("conferenceID")
-);
-
-create table employee(
-   employeeTeam INTEGER PRIMARY key IDENTITY (1,1),
-   coach text not null,
-   manager text not null,
-   owner text not null
-   FOREIGN key ("teamID") REFERENCES "team" ("teamID")
-);
-
 create table city(
    cityID integer primary key IDENTITY (1,1),
    cityName text not null
@@ -47,19 +26,33 @@ create table conference(
    conference text not null
 );
 
-create table generate(
-   "gameID" INTEGER,
-   "teamID" INTEGER,
-   PRIMARY KEY ("gameID","teamID"),
-   FOREIGN KEY ("gameID") REFERENCES "gameData"("gameID"),
-   FOREIGN KEY ("teamID") REFERENCES "team"("teamID")
+create table team(
+   cityID INTEGER,
+   conferenceID INTEGER,
+   teamID integer primary key,
+   abbreviation text not null,
+   nickname text not null,
+   yearFounded integer not null,
+   arenaName text not null,
+   arenaCapacity integer,
+   dleagueAffiliation text not null,
+   FOREIGN key ("cityID") REFERENCES city ("cityID"),
+   FOREIGN key ("conferenceID") REFERENCES "conference" ("conferenceID")
+);
+
+create table employee(
+   teamID INTEGER,
+   coach text not null,
+   manager text not null,
+   owner text not null
+   FOREIGN key ("teamID") REFERENCES "team" ("teamID")
 );
 
 create table gameData(
    gameID integer primary key,
    gameDate text not null,
    
-   homeTeamID integer primary key,
+   homeTeamID integer,
    ptsHome integer not null,
    fgPtsHome float not null,
    fgPctHome float not null,
@@ -69,7 +62,7 @@ create table gameData(
    rebHome integer not null,
    homeTeamWins integer not null,
 
-   awayTeamID integer primary key,
+   awayTeamID integer,
    ptsAway integer not null,
    fgPtsAway float not null,
    fgPctAway float not null,
@@ -80,13 +73,14 @@ create table gameData(
    awayTeamWins integer not null
 );
 
-create table standings(
+create table generate(
+   "gameID" INTEGER,
    "teamID" INTEGER,
-   "standingsDate" INTEGER,
-   PRIMARY key ("teamID", "standingsDate"),
-   FOREIGN KEY ("teamID") REFERENCES "team"("teamID"),
-   FOREIGN KEY ("standingsDate") REFERENCES "leaderboard"("standingsDate")
+   PRIMARY KEY ("gameID","teamID"),
+   FOREIGN KEY ("gameID") REFERENCES "gameData"("gameID"),
+   FOREIGN KEY ("teamID") REFERENCES "team"("teamID")
 );
+
 
 create table leaderboard(
    standingsDate integer primary key,
@@ -98,6 +92,20 @@ create table leaderboard(
    awayRecord integer not null
 );
 
+create table standings(
+   "teamID" INTEGER,
+   "standingsDate" INTEGER,
+   PRIMARY key ("teamID", "standingsDate"),
+   FOREIGN KEY ("teamID") REFERENCES "team"("teamID"),
+   FOREIGN KEY ("standingsDate") REFERENCES "leaderboard"("standingsDate")
+);
+
+create table season(
+   seasonID integer primary key,
+   season_year integer not null
+);
+
+
 create table compete(
    "seasonID" INTEGER,
    "teamID" INTEGER,
@@ -106,9 +114,9 @@ create table compete(
    FOREIGN KEY ("teamID") REFERENCES "team"("teamID")
 );
 
-create table season(
-   seasonID integer primary key,
-   season_year integer not null
+create table player(
+   playerID integer primary key,
+   playerName text not null
 );
 
 create table signed(
@@ -117,11 +125,6 @@ create table signed(
    PRIMARY KEY ("playerID", "teamID"),
    FOREIGN KEY ("playerID") REFERENCES "player"("playerID"),
    FOREIGN KEY ("teamID") REFERENCES "team"("teamID")
-);
-
-create table player(
-   playerID integer primary key,
-   playerName text not null
 );
 
 create table play(
