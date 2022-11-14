@@ -1,7 +1,6 @@
 use cs3380;
 
 drop table if exists team;
-drop table if exists employee;
 drop table if exists city;
 drop table if exists conference;
 drop table if exists generate;
@@ -34,16 +33,11 @@ create table team(
    arenaName text not null,
    arenaCapacity integer,
    dleagueAffiliation text not null,
+   tCoach text not null,
+   tManager text not null,
+   tOwner text not null,
    FOREIGN key ("cityID") REFERENCES city ("cityID"),
    FOREIGN key ("conferenceID") REFERENCES "conference" ("conferenceID")
-);
-
-create table employee(
-   teamID INTEGER,
-   coach text not null,
-   manager text not null,
-   owner text not null
-   FOREIGN key ("teamID") REFERENCES "team" ("teamID")
 );
 
 create table gameData(
