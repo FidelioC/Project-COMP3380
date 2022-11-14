@@ -1,16 +1,16 @@
 use cs3380;
 
+drop table if exists generate;
 drop table if exists team;
 drop table if exists city;
 drop table if exists conference;
-drop table if exists generate;
 drop table if exists gameData;
-drop table if exists standing;
+drop table if exists standings;
 drop table if exists leaderboard;
 drop table if exists compete;
 drop table if exists season;
 drop table if exists signed;
-drop table if exists players;
+drop table if exists player;
 drop table if exists play;
 
 create table city(
