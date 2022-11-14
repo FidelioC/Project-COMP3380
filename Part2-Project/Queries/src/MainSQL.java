@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import java.io.*;
+import java.util.Scanner;
 
-public class SQLServerDemo {
+public class MainSQL {
 
     // Connect to your database.
     // Replace server name, username, and password with your credentials
@@ -49,19 +51,33 @@ public class SQLServerDemo {
         try (Connection connection = DriverManager.getConnection(connectionUrl);
                 Statement statement = connection.createStatement();) {
 
+
+            insertAll(statement);
+
             // Create and execute a SELECT SQL statement.
-            String selectSql = "SELECT firstname, lastname, provinces.name from people join provinces on people.provinceID = provinces.provinceID;";
+            String selectSql = "select * from city;";
             resultSet = statement.executeQuery(selectSql);
 
             // Print results from select statement
             while (resultSet.next()) {
                 System.out.println(resultSet.getString(1) + 
-                " " + resultSet.getString(2) +
-                " lives in " + resultSet.getString(3));
+                " " + resultSet.getString(2));
             }
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    public static void insertAll(Statement s) throws Exception{
+        File city = new File("city.csv");
+        InsertCSV nInsert = new InsertCSV(city);
+        nInsert.insertCity(s);
+
+
+    }
+
 }
