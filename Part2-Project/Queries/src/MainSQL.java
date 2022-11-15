@@ -75,12 +75,12 @@ public class MainSQL {
     public static void insertAll(Statement s) throws Exception{
         File city = new File("city.csv");
         File conference = new File("conference.csv");
-
+        File team = new File("team.csv");
         InsertCSV insert = new InsertCSV();
 
         insert.insertManyOne(s,"city", city);
         insert.insertManyOne(s,"conference", conference);
-
+        insert.insertManyMany(s,"team", team);
 
     }
 

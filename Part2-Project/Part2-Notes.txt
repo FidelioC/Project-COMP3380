@@ -1,6 +1,10 @@
--city.csv = It is splitted from the Team.csv (original file).
-
 -ParseCSV.java = parse the CSV file and will run the insert query
+		     
+ The algorithm:
+	- It will read the first row to get the attributes
+      - according to the position of the attributes, 
+        it will insert the tuples base on it position.		
 
+-city.csv = It is splitted from the Team.csv (original file).
 -conference.csv = splitted from the ranking.csv (ori) there are only
                   two conference east & west.

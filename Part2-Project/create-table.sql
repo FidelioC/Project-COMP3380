@@ -25,25 +25,25 @@ create table conference(
 );
 
 create table team(
-   cityID INTEGER,
-   conferenceID INTEGER,
    teamID integer primary key,
    abbreviation text not null,
    nickname text not null,
-   yearFounded integer not null,
+   conferenceID INTEGER,
    arenaName text not null,
    arenaCapacity integer,
    dleagueAffiliation text not null,
    tCoach text not null,
    tManager text not null,
    tOwner text not null,
+   cityID INTEGER,
+   yearFounded integer not null,
    FOREIGN key ("cityID") REFERENCES city ("cityID"),
    FOREIGN key ("conferenceID") REFERENCES "conference" ("conferenceID")
 );
 
 create table gameData(
-   gameID integer primary key,
    gameDate text not null,
+   gameID integer primary key,
    
    homeTeamID integer,
    ptsHome integer not null,
