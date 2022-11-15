@@ -52,12 +52,11 @@ public class MainSQL {
                 Statement statement = connection.createStatement();) {
 
 
+
+
+            // Create and execute inserts SQL statement.
             insertAll(statement);
-
-            // Create and execute a SELECT SQL statement.
-            String selectSql = "select * from conference;";
-            resultSet = statement.executeQuery(selectSql);
-
+            
             // Print results from select statement
             while (resultSet.next()) {
                 System.out.println(resultSet.getString(1) + 
