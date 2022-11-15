@@ -23,3 +23,5 @@
 
 -season.csv = splitting the season values from the players.csv 
 
+-generate.csv (relation) = combining the game_id and team_id from the games.csv
+

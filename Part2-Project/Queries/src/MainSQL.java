@@ -51,15 +51,15 @@ public class MainSQL {
             File season = new File("season.csv");
             File generate = new File("generate.csv");
 
-            insertInto(connection, city, "city");
-            insertInto(connection, conference, "conference");
-            insertInto(connection, team, "team");
+            //insertInto(connection, city, "city");
+            //insertInto(connection, conference, "conference");
+            //insertInto(connection, team, "team");
 
             //takes around 7 minutes to finish
-            insertInto(connection, gameData, "gameData");
+            //insertInto(connection, gameData, "gameData");
 
             //insertInto(connection, player, "player");
-            insertInto(connection, season, "season");
+            //insertInto(connection, season, "season");
             insertInto(connection, generate, "generate");
         }
         catch (Exception e) {
@@ -78,6 +78,7 @@ public class MainSQL {
         String query = "";
         Boolean isCityConference = fileName.equals("city") || fileName.equals("conference") ||
                                     fileName.equals("season");
+        System.out.println("Getting Data from " + fileName + ".......");
         while((line = readFile.readLine()) != null) {
             tuple = line.split(",");
             if(isCityConference){
@@ -111,6 +112,8 @@ public class MainSQL {
             stmt.executeUpdate();
 
         }
+
+        System.out.println("Getting Data from " + fileName + " Finished!");
     }
     public static boolean isInteger(String str){
         try {
