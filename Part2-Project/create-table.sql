@@ -93,14 +93,14 @@ create table standings(
 );
 
 create table season(
-   seasonID integer primary key IDENTITY(1,1),
+   seasonID integer primary key,
    season_year integer not null
 );
 
 
 create table compete(
-   "seasonID" INTEGER,
    "teamID" INTEGER,
+   "seasonID" INTEGER,
    PRIMARY KEY ("seasonID", "teamID"),
    FOREIGN KEY ("seasonID") REFERENCES "season"("seasonID"),
    FOREIGN KEY ("teamID") REFERENCES "team"("teamID")

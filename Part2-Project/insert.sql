@@ -11,6 +11,8 @@ SELECT * from player;
 SELECT * from season;
 
 select * from generate;
+
+select * from compete;
 /*
   standings
   leaderboard

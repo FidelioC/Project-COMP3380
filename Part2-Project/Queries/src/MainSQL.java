@@ -50,7 +50,7 @@ public class MainSQL {
             File player = new File("player.csv");
             File season = new File("season.csv");
             File generate = new File("generate.csv");
-
+            File compete = new File("compete.csv");
             //insertInto(connection, city, "city");
             //insertInto(connection, conference, "conference");
             //insertInto(connection, team, "team");
@@ -58,9 +58,10 @@ public class MainSQL {
 
             //insertInto(connection, gameData, "gameData"); //7 minutes to finish
 
-            insertInto(connection, player, "player"); //3 minutes to finish
+            //insertInto(connection, player, "player"); //3 minutes to finish
             //insertInto(connection, season, "season");
             //insertInto(connection, generate, "generate"); //14 minutes to finish
+            insertInto(connection, compete, "compete");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -76,8 +77,7 @@ public class MainSQL {
         tuple = line.split(",");
         String questionMark = "";
         String query = "";
-        Boolean isCityConference = fileName.equals("city") || fileName.equals("conference") ||
-                                    fileName.equals("season");
+        Boolean isCityConference = fileName.equals("city") || fileName.equals("conference");
         System.out.println("Getting Data from " + fileName + ".......");
         while((line = readFile.readLine()) != null) {
             tuple = line.split(",");

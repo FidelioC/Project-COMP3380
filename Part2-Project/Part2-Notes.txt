@@ -1,6 +1,7 @@
 -ParseCSV.java = parse the CSV file and will run the insert query
 		     
  The algorithm:
+	- It uses prepared statement because there's data that has an apostrophe
 	- It will read the first row to get the attributes
       - according to the position of the attributes, 
         it will insert the tuples base on its position.
@@ -17,11 +18,17 @@
 	of it.
   	The error: even though the game and the date is the same, it has a 
 		     different statistics and it doesn't make sense.
+-compete.csv = It is splitted from the ranking.csv (ori).
+		   Its indicating which seasons the team has played in.
 
 -player.csv = taking the name of the players and give each people
 		  a unique_ID. Splitting the Data from players.csv
 
--season.csv = splitting the season values from the players.csv 
-
+-season.csv = splitting the season values from the players.csv.
+		  The season between each original file is incosistent.
+		  Theres is more season in the games.csv(ori) compared 
+		  to the season in players.csv(ori). So, we decided to
+		  use the smaller season (2009-2019) in order to avoid
+		  NULLS.  
 -generate.csv (relation) = combining the game_id and team_id from the games.csv
 
