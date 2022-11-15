@@ -3,8 +3,22 @@
  The algorithm:
 	- It will read the first row to get the attributes
       - according to the position of the attributes, 
-        it will insert the tuples base on it position.		
+        it will insert the tuples base on it position.
+	- Used bufferedReader because it is much faster than Scanner		
 
 -city.csv = It is splitted from the Team.csv (original file).
 -conference.csv = splitted from the ranking.csv (ori) there are only
                   two conference east & west.
+-team.csv = Not much change from the table itself. But it is taking foreign
+		key from city(cid) and conference(conf_id) tables.
+-gameData.csv = 
+	there are some errors in the gameData table, so we need to edit some 
+	of it.
+  	The error: even though the game and the date is the same, it has a 
+		     different statistics and it doesn't make sense.
+
+-player.csv = taking the name of the players and give each people
+		  a unique_ID. Splitting the Data from players.csv
+
+-season.csv = splitting the season values from the players.csv 
+

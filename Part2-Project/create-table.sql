@@ -46,24 +46,23 @@ create table gameData(
    gameID integer primary key,
    
    homeTeamID integer,
+   awayTeamID integer,
+   
    ptsHome integer not null,
-   fgPtsHome float not null,
    fgPctHome float not null,
    ftPctHome float not null,
    fg3PctHome float not null,
    astHome integer not null,
    rebHome integer not null,
-   homeTeamWins integer not null,
-
-   awayTeamID integer,
+   
    ptsAway integer not null,
-   fgPtsAway float not null,
    fgPctAway float not null,
    ftPctAway float not null,
    fg3PctAway float not null,
    astAway integer not null,
    rebAway integer not null,
-   awayTeamWins integer not null
+
+   homeTeamWins integer not null,
 );
 
 create table generate(
@@ -94,7 +93,7 @@ create table standings(
 );
 
 create table season(
-   seasonID integer primary key,
+   seasonID integer primary key IDENTITY(1,1),
    season_year integer not null
 );
 

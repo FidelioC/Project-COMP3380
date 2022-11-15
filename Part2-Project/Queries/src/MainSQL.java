@@ -64,11 +64,8 @@ public class MainSQL {
                 " " + resultSet.getString(2));
             }
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -76,11 +73,17 @@ public class MainSQL {
         File city = new File("city.csv");
         File conference = new File("conference.csv");
         File team = new File("team.csv");
+        File gameData = new File("gameData.csv");
+        File player = new File("player.csv");
+        File season = new File("season.csv");
         InsertCSV insert = new InsertCSV();
 
         insert.insertManyOne(s,"city", city);
         insert.insertManyOne(s,"conference", conference);
         insert.insertManyMany(s,"team", team);
+        insert.insertManyMany(s,"gameData",gameData);
+        insert.insertManyMany(s,"player",player);
+        insert.insertManyOne(s,"season",season);
 
     }
 

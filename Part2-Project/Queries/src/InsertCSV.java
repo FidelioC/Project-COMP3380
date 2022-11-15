@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class InsertCSV {
     private File fileName;
-    private Scanner readFile;
+    private BufferedReader readFile;
     InsertCSV () {
 
     }
@@ -13,13 +13,22 @@ public class InsertCSV {
         setFile(theFile);
         String insertSQL = "";
         String line = "";
-        line = readFile.nextLine();
-
+        line = readFile.readLine();
+        String replace;
         String[] tuple;
-        while(readFile.hasNextLine()){
-            line = readFile.nextLine();
+        String tupleData = "";
+        while((line = readFile.readLine()) != null){
+            //line = readFile.nextLine();
             tuple = line.split(",");
-            insertSQL = "insert into " + name + " values ('" + tuple[1] + "')";
+            if(tuple[1].contains("'")){
+                replace = tuple[1].replace("'","");
+                tupleData = replace;
+            }
+            else {
+                tupleData = tuple[1];
+            }
+            insertSQL = "insert into " + name + " values ('" + tupleData + "')";
+            System.out.println(insertSQL);
             s.executeUpdate(insertSQL);
         }
     }
@@ -29,17 +38,17 @@ public class InsertCSV {
         String insertSQL = "";
         //String[] attributes;
         String line = "";
-        line = readFile.nextLine();
+        line = readFile.readLine();
         //attributes = line.split(",");
 
         String[] tuple;
         String tupleData= "";
         String replace = "";
-        while(readFile.hasNextLine()){
-            line = readFile.nextLine();
+        while((line = readFile.readLine()) != null){
+            //line = readFile.nextLine();
             tuple = line.split(",");
             for(int i=0; i<tuple.length; i++){
-                if(tuple[i].matches("\\d+")) {//if int
+                if(tuple[i].matches("-?\\d+(\\.\\d+)?")) {//if numeric
                     tupleData += tuple[i];
                 }
                 else{
@@ -63,11 +72,9 @@ public class InsertCSV {
             tupleData = "";
         }
     }
-
-
-    private void setFile(File theFile) throws Exception{
+    private void setFile(File theFile) throws Exception {
         fileName = theFile;
-        readFile = new Scanner(fileName);
+        readFile = new BufferedReader(new FileReader(fileName));
     }
 
 }
