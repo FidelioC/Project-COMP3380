@@ -1,4 +1,6 @@
--I create a new CSV file for the City. It is splitted from the Team.csv
- original File.
+-city.csv = It is splitted from the Team.csv (original file).
 
 -ParseCSV.java = parse the CSV file and will run the insert query
+
+-conference.csv = splitted from the ranking.csv (ori) there are only
+                  two conference east & west.

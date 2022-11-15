@@ -55,7 +55,7 @@ public class MainSQL {
             insertAll(statement);
 
             // Create and execute a SELECT SQL statement.
-            String selectSql = "select * from city;";
+            String selectSql = "select * from conference;";
             resultSet = statement.executeQuery(selectSql);
 
             // Print results from select statement
@@ -74,8 +74,12 @@ public class MainSQL {
 
     public static void insertAll(Statement s) throws Exception{
         File city = new File("city.csv");
-        InsertCSV nInsert = new InsertCSV(city);
-        nInsert.insertCity(s);
+        File conference = new File("conference.csv");
+
+        InsertCSV insert = new InsertCSV();
+
+        insert.insertManyOne(s,"city", city);
+        insert.insertManyOne(s,"conference", conference);
 
 
     }
