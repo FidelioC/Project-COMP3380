@@ -56,7 +56,7 @@ public class MainSQL {
 
             // Create and execute inserts SQL statement.
             insertAll(statement);
-            
+
             // Print results from select statement
             while (resultSet.next()) {
                 System.out.println(resultSet.getString(1) + 

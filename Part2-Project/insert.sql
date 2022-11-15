@@ -9,3 +9,12 @@ SELECT * from gameData;
 SELECT * from player;
 
 SELECT * from season;
+
+/*
+  generate
+  standings
+  leaderboard
+  compete
+  plays
+  signed
+*/
