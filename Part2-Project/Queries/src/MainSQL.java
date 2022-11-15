@@ -1,11 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 import java.io.*;
 import java.util.Scanner;
@@ -52,38 +48,82 @@ public class MainSQL {
                 Statement statement = connection.createStatement();) {
 
 
+            File city = new File("city.csv");
+            File conference = new File("conference.csv");
+            File team = new File("team.csv");
+            File gameData = new File("gameData.csv");
+            File player = new File("player.csv");
+            File season = new File("season.csv");
 
 
-            // Create and execute inserts SQL statement.
-            insertAll(statement);
+            insertInto(connection, city, "city");
+            insertInto(connection, conference, "conference");
+            insertInto(connection, team, "team");
 
-            // Print results from select statement
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(1) + 
-                " " + resultSet.getString(2));
-            }
+            //takes around 7 minutes to finish
+            //insertInto(connection, gameData, "gameData");
+
+            //insertInto(connection, player, "player");
+            insertInto(connection, season, "season");
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void insertAll(Statement s) throws Exception{
-        File city = new File("city.csv");
-        File conference = new File("conference.csv");
-        File team = new File("team.csv");
-        File gameData = new File("gameData.csv");
-        File player = new File("player.csv");
-        File season = new File("season.csv");
-        InsertCSV insert = new InsertCSV();
+    public static void insertInto(Connection connection, File file, String fileName) throws Exception{
+        PreparedStatement stmt = null;
+        BufferedReader readFile = new BufferedReader(new FileReader(file));
+        String line = "";
+        line = readFile.readLine();
+        String[] tuple;
+        tuple = line.split(",");
+        String questionMark = "";
+        String query = "";
+        Boolean isCityConference = fileName.equals("city") || fileName.equals("conference") ||
+                                    fileName.equals("season");
+        while((line = readFile.readLine()) != null) {
+            tuple = line.split(",");
+            if(isCityConference){
+                query = "insert into " + fileName + " values (?)";
+                stmt = connection.prepareStatement(query);
+                stmt.setString(1,tuple[1]);
+            }
+            else{
+                for(int i=0; i<tuple.length; i++){
+                    questionMark += "?";
+                    if(i < tuple.length-1)
+                        questionMark += ",";
+                }
+                query = "insert into " + fileName + " values (" + questionMark + ")";
+                stmt = connection.prepareStatement(query);
+                for(int i=0; i<tuple.length; i++){
+                    if(tuple[i].matches("-?\\\\d+")){//is Numeric
+                        if(isInteger(tuple[i])){
+                            stmt.setInt(i+1,Integer.parseInt(tuple[i]));
+                        }else{
+                            stmt.setDouble(i+1,Integer.parseInt(tuple[i]));
+                        }
+                    }
+                    else{
+                        stmt.setString(i+1,tuple[i]);
+                    }
+                }
+                questionMark = "";
+            }
+            System.out.println(query);
+            stmt.executeUpdate();
 
-        insert.insertManyOne(s,"city", city);
-        insert.insertManyOne(s,"conference", conference);
-        insert.insertManyMany(s,"team", team);
-        insert.insertManyMany(s,"gameData",gameData);
-        insert.insertManyMany(s,"player",player);
-        insert.insertManyOne(s,"season",season);
-
+        }
     }
+    public static boolean isInteger(String str){
+        try {
+            Integer.parseInt(str);
+        }
+        catch(NumberFormatException e) {
+            return false;
+        }
 
+        return true;
+    }
 }
