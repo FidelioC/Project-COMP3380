@@ -55,12 +55,12 @@ public class MainSQL {
             //insertInto(connection, conference, "conference");
             //insertInto(connection, team, "team");
 
-            //takes around 7 minutes to finish
-            //insertInto(connection, gameData, "gameData");
 
-            //insertInto(connection, player, "player");
+            //insertInto(connection, gameData, "gameData"); //7 minutes to finish
+
+            insertInto(connection, player, "player"); //3 minutes to finish
             //insertInto(connection, season, "season");
-            insertInto(connection, generate, "generate");
+            //insertInto(connection, generate, "generate"); //14 minutes to finish
         }
         catch (Exception e) {
             e.printStackTrace();
