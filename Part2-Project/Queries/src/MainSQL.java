@@ -42,29 +42,25 @@ public class MainSQL {
                 + "trustServerCertificate=false;"
                 + "loginTimeout=30;";
 
-        ResultSet resultSet = null;
-
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-                Statement statement = connection.createStatement();) {
-
-
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             File city = new File("city.csv");
             File conference = new File("conference.csv");
             File team = new File("team.csv");
             File gameData = new File("gameData.csv");
             File player = new File("player.csv");
             File season = new File("season.csv");
-
+            File generate = new File("generate.csv");
 
             insertInto(connection, city, "city");
             insertInto(connection, conference, "conference");
             insertInto(connection, team, "team");
 
             //takes around 7 minutes to finish
-            //insertInto(connection, gameData, "gameData");
+            insertInto(connection, gameData, "gameData");
 
             //insertInto(connection, player, "player");
             insertInto(connection, season, "season");
+            insertInto(connection, generate, "generate");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +107,7 @@ public class MainSQL {
                 }
                 questionMark = "";
             }
-            System.out.println(query);
+            //System.out.println(query);
             stmt.executeUpdate();
 
         }
@@ -123,7 +119,6 @@ public class MainSQL {
         catch(NumberFormatException e) {
             return false;
         }
-
         return true;
     }
 }

@@ -3,7 +3,8 @@
  The algorithm:
 	- It will read the first row to get the attributes
       - according to the position of the attributes, 
-        it will insert the tuples base on it position.
+        it will insert the tuples base on its position.
+	- it will also check whether a data is String/float/int
 	- Used bufferedReader because it is much faster than Scanner		
 
 -city.csv = It is splitted from the Team.csv (original file).
