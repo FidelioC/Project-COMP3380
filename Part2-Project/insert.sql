@@ -21,8 +21,13 @@ SELECT * from signed;
 SELECT * from player
 join season on season.playerID = player.playerID
 join compete on player.playerID = compete.playerID 
-      and season.season_year = compete.season_year;
+      and season.season_year = compete.season_year
+join team on compete.teamID = team.teamID;
 
+select team.nickname, gameData.* from team
+join generate on generate.teamID = team.teamID
+join gameData on gameData.gameID = generate.gameID
+where team.teamID = 1610612742;
 /*
 SELECT * from player 
 join play on player.playerID = play.playerID

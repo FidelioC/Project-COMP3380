@@ -1,18 +1,16 @@
 use cs3380;
 
-drop table if exists standings;
+/*drop table if exists standings;*/
 
 drop table if exists generate;
-
-
-drop table if exists team;
-drop table if exists city;
-drop table if exists conference;
 drop table if exists gameData;
 drop table if exists leaderboard;
-
+drop table if exists city;
+drop table if exists conference;
 drop table if exists compete;
-drop table if exists play;
+drop table if exists team;
+/*drop table if exists play;*/
+
 drop table if exists season;
 drop table if exists signed;
 drop table if exists player;
@@ -32,6 +30,7 @@ create table conference(
 create table team(
    teamID integer primary key,
    abbreviation text not null,
+   teamName text not null,
    nickname text not null,
    conferenceID INTEGER,
    arenaName text not null,
@@ -80,22 +79,25 @@ create table generate(
 
 
 create table leaderboard(
-   standingsDate integer primary key,
+   "teamID" INTEGER,
+   seasonID integer not null,
+   standingsDate varchar(100) not null,
    gamesPlayed integer not null,
    gamesWon integer not null,
    gamesLost integer not null,
-   winPercent integer not null,
-   homeRecord integer not null,
-   awayRecord integer not null
+   winPercent float not null,
+   PRIMARY key ("teamID", "standingsDate"),
+   FOREIGN key ("teamID") REFERENCES "team"("teamID")
 );
 
+/*
 create table standings(
    "teamID" INTEGER,
    "standingsDate" INTEGER,
    PRIMARY key ("teamID", "standingsDate"),
    FOREIGN KEY ("teamID") REFERENCES "team"("teamID"),
    FOREIGN KEY ("standingsDate") REFERENCES "leaderboard"("standingsDate")
-);
+);*/
 
 
 create table player(
