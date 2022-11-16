@@ -51,6 +51,8 @@ public class MainSQL {
             File season = new File("season.csv");
             File generate = new File("generate.csv");
             File compete = new File("compete.csv");
+            File play = new File("play.csv");
+
             //insertInto(connection, city, "city");
             //insertInto(connection, conference, "conference");
             //insertInto(connection, team, "team");
@@ -61,7 +63,8 @@ public class MainSQL {
             //insertInto(connection, player, "player"); //3 minutes to finish
             //insertInto(connection, season, "season");
             //insertInto(connection, generate, "generate"); //14 minutes to finish
-            insertInto(connection, compete, "compete");
+            //insertInto(connection, compete, "compete");
+            insertInto(connection, play, "play");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -108,7 +111,7 @@ public class MainSQL {
                 }
                 questionMark = "";
             }
-            //System.out.println(query);
+            System.out.println(query);
             stmt.executeUpdate();
 
         }

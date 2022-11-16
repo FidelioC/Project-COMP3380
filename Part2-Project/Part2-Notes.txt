@@ -30,5 +30,7 @@
 		  to the season in players.csv(ori). So, we decided to
 		  use the smaller season (2009-2019) in order to avoid
 		  NULLS.  
--generate.csv (relation) = combining the game_id and team_id from the games.csv
+-generate.csv (relation) = combine the game_id and team_id from the games.csv
 
+-play.csv(relation) = combine the season_id and player_id. The data taken
+			    from players.csv(ori).

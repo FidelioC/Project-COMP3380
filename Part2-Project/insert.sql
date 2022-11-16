@@ -13,10 +13,13 @@ SELECT * from season;
 select * from generate;
 
 select * from compete;
+
+SELECT * from play;
+
+
+
 /*
   standings
   leaderboard
-  compete
-  plays
   signed
 */
