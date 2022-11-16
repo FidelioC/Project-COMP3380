@@ -5,41 +5,37 @@ use cs3380;
 drop table if exists generate;
 drop table if exists gameData;
 drop table if exists leaderboard;
+drop table if exists compete;
+drop table if exists season;
+drop table if exists signed;
 drop table if exists team;
 drop table if exists city;
 drop table if exists conference;
-drop table if exists compete;
-
-/*drop table if exists play;*/
-
-drop table if exists season;
-drop table if exists signed;
 drop table if exists player;
-
-
+/*drop table if exists play;*/
 
 create table city(
    cityID integer primary key IDENTITY (1,1),
-   cityName text not null
+   cityName varchar(15) not null
 );
 
 create table conference(
    conferenceID integer primary key IDENTITY(1,1),
-   conference text not null
+   conference varchar(5) not null
 );
 
 create table team(
    teamID integer primary key,
-   abbreviation text not null,
-   teamName text not null,
-   nickname text not null,
+   abbreviation varchar(3) not null,
+   teamName varchar(20) not null,
+   nickname varchar(15) not null,
    conferenceID INTEGER,
-   arenaName text not null,
+   arenaName varchar(30) not null,
    arenaCapacity integer,
-   dleagueAffiliation text not null,
-   tCoach text not null,
-   tManager text not null,
-   tOwner text not null,
+   dleagueAffiliation varchar(35) not null,
+   tCoach varchar(17) not null,
+   tManager varchar(17) not null,
+   tOwner varchar(35) not null,
    cityID INTEGER,
    yearFounded integer not null,
    FOREIGN key ("cityID") REFERENCES city ("cityID"),
@@ -47,7 +43,7 @@ create table team(
 );
 
 create table gameData(
-   gameDate text not null,
+   gameDate varchar(10) not null,
    gameID integer primary key,
    
    homeTeamID integer,
@@ -103,7 +99,7 @@ create table standings(
 
 create table player(
    playerID integer primary key,
-   playerName text not null
+   playerName varchar(50) not null
 );
 
 create table season(

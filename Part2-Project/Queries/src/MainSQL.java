@@ -43,31 +43,31 @@ public class MainSQL {
                 + "loginTimeout=30;";
 
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
-            File city = new File("city.csv");
-            File conference = new File("conference.csv");
-            File team = new File("team.csv");
-            File gameData = new File("gameData.csv");
-            File player = new File("player.csv");
-            File season = new File("season.csv");
-            File generate = new File("generate.csv");
-            File compete = new File("compete.csv");
+            File city = new File("csvfiles/city.csv");
+            File conference = new File("csvfiles/conference.csv");
+            File team = new File("csvfiles/team.csv");
+            File gameData = new File("csvfiles/gameData.csv");
+            File player = new File("csvfiles/player.csv");
+            File season = new File("csvfiles/season.csv");
+            File generate = new File("csvfiles/generate.csv");
+            File compete = new File("csvfiles/compete.csv");
             //File play = new File("play.csv");
-            File signed = new File("signed.csv");
-            File leaderboard = new File ("leaderboard.csv");
+            File signed = new File("csvfiles/signed.csv");
+            File leaderboard = new File ("csvfiles/leaderboard.csv");
 
-            //insertInto(connection, city, "city");
-            //insertInto(connection, conference, "conference");
-            //insertInto(connection, team, "team");
+            insertInto(connection, city, "city");
+            insertInto(connection, conference, "conference");
+            insertInto(connection, team, "team");
 
 
-            //insertInto(connection, gameData, "gameData"); //7 minutes to finish
+            insertInto(connection, gameData, "gameData"); //7 minutes to finish
 
-            //insertInto(connection, player, "player"); //3 minutes to finish
-            //insertInto(connection, season, "season");
-            //insertInto(connection, generate, "generate"); //14 minutes to finish
-            //insertInto(connection, compete, "compete");
+            insertInto(connection, player, "player"); //3 minutes to finish
+            insertInto(connection, season, "season");
+            insertInto(connection, generate, "generate"); //14 minutes to finish
+            insertInto(connection, compete, "compete");
             //insertInto(connection, play, "play");
-            //insertInto(connection,signed, "signed");
+            insertInto(connection,signed, "signed");
             insertInto(connection,leaderboard, "leaderboard");//32 minutes
         }
         catch (Exception e) {
