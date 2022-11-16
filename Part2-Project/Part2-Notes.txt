@@ -41,3 +41,6 @@ The algorithm:
 			 a lot of empty spaces and similar values.
 		       We don't need team name and conference because 
                    it is already splitted on another table.
+			 We decided to remove some of the rows because
+			 we want to have the same year as the other tables
+			 (2009-2019).
