@@ -52,7 +52,7 @@ public class MainSQL {
             File generate = new File("generate.csv");
             File compete = new File("compete.csv");
             File play = new File("play.csv");
-
+            File signed = new File("signed.csv");
             //insertInto(connection, city, "city");
             //insertInto(connection, conference, "conference");
             //insertInto(connection, team, "team");
@@ -63,8 +63,9 @@ public class MainSQL {
             //insertInto(connection, player, "player"); //3 minutes to finish
             //insertInto(connection, season, "season");
             //insertInto(connection, generate, "generate"); //14 minutes to finish
-            //insertInto(connection, compete, "compete");
-            insertInto(connection, play, "play");
+            insertInto(connection, compete, "compete");
+            //insertInto(connection, play, "play");
+            //insertInto(connection,signed, "signed");
         }
         catch (Exception e) {
             e.printStackTrace();

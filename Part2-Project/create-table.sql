@@ -1,17 +1,22 @@
 use cs3380;
 
 drop table if exists standings;
-drop table if exists play;
+
 drop table if exists generate;
-drop table if exists compete;
-drop table if exists signed;
+
+
 drop table if exists team;
 drop table if exists city;
 drop table if exists conference;
 drop table if exists gameData;
 drop table if exists leaderboard;
+
+drop table if exists compete;
+drop table if exists play;
 drop table if exists season;
+drop table if exists signed;
 drop table if exists player;
+
 
 
 create table city(
@@ -92,23 +97,25 @@ create table standings(
    FOREIGN KEY ("standingsDate") REFERENCES "leaderboard"("standingsDate")
 );
 
-create table season(
-   seasonID integer primary key,
-   season_year integer not null
-);
-
-
-create table compete(
-   "teamID" INTEGER,
-   "seasonID" INTEGER,
-   PRIMARY KEY ("seasonID", "teamID"),
-   FOREIGN KEY ("seasonID") REFERENCES "season"("seasonID"),
-   FOREIGN KEY ("teamID") REFERENCES "team"("teamID")
-);
 
 create table player(
    playerID integer primary key,
    playerName text not null
+);
+
+create table season(
+   "playerID" INTEGER,
+   "season_year" integer not null,
+   PRIMARY KEY ("playerID", "season_year"),
+   FOREIGN key ("playerID") REFERENCES "player"("playerID"),
+);
+
+create table compete(
+   "teamID" INTEGER,
+   "playerID" INTEGER,
+   "season_year" INTEGER,
+   FOREIGN KEY ("playerID","season_year") REFERENCES "season"("playerID","season_year"),
+   FOREIGN KEY ("teamID") REFERENCES "team"("teamID")
 );
 
 create table signed(
@@ -119,13 +126,14 @@ create table signed(
    FOREIGN KEY ("teamID") REFERENCES "team"("teamID")
 );
 
+/*
 create table play(
    "playerID" INTEGER,
-   "seasonID" INTEGER,
-   PRIMARY KEY ("playerID", "seasonID"),
+   "season_year" INTEGER,
+   PRIMARY KEY ("playerID"),
    FOREIGN KEY ("playerID") REFERENCES "player"("playerID"),
-   FOREIGN key ("seasonID") REFERENCES "season"("seasonID")
-);
+   
+);*/
 
 
 
