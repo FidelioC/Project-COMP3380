@@ -81,7 +81,7 @@ create table generate(
 create table leaderboard(
    "teamID" INTEGER,
    seasonID integer not null,
-   standingsDate varchar(100) not null,
+   standingsDate varchar(10) not null,
    gamesPlayed integer not null,
    gamesWon integer not null,
    gamesLost integer not null,
