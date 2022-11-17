@@ -20,19 +20,19 @@ public class Main {
     }
 }
 
-class GUI extends JFrame implements ActionListener {
+class GUI{
 
     private JLabel label;
 
     private JFrame frame;
     private JPanel panel;
-    private JButton button;
     private JTextArea text;
 
     private JTextArea textArea;
     private Connection connection;
     private Statement statement;
     String connectionUrl;
+    String selectSql;
 
     public GUI() {
         Properties prop = new Properties();
@@ -67,17 +67,9 @@ class GUI extends JFrame implements ActionListener {
 
         frame = new JFrame("Demo Frame");
         panel = new JPanel();
-
-        button = new JButton("Show All City");
-        Dimension size = button.getPreferredSize();
-
-        button.setBounds(0, 0, 350, 50);
-        button.setHorizontalAlignment(SwingConstants.LEFT);
-        button.addActionListener(this);
-
         panel.setLayout(null);
-        panel.add(button);
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        //queryButtons();
+        createLogin();
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(panel);
@@ -85,7 +77,7 @@ class GUI extends JFrame implements ActionListener {
         frame.setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void runQuery() {
         try {
             connection = DriverManager.getConnection(connectionUrl);
             Statement statement = connection.createStatement();
@@ -93,7 +85,7 @@ class GUI extends JFrame implements ActionListener {
             ResultSet resultSet = null;
             String result = "";
             // Create and execute a SELECT SQL statement.
-            String selectSql = "SELECT * from city";
+
             resultSet = statement.executeQuery(selectSql);
 
             // Print results from select statement
@@ -110,5 +102,44 @@ class GUI extends JFrame implements ActionListener {
         } catch (Exception s) {
             s.printStackTrace();
         }
+    }
+    public void queryButtons(){
+        JButton button = new JButton(new AbstractAction("Show All Cities") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectSql = "select * from city";
+                runQuery();
+            }
+        });
+        button.setBounds(0, 0, 350, 50);
+        button.setHorizontalAlignment(SwingConstants.LEFT);
+        panel.add(button);
+    }
+
+    public void createLogin(){
+        JLabel label = new JLabel("User");
+        label.setBounds(10,20,80,25);
+        panel.add(label);
+
+        JTextField userText = new JTextField(20);
+        userText.setBounds(100,20,165,25);
+        panel.add(userText);
+
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setBounds(10,50,80,25);
+        panel.add(passwordLabel);
+
+        JPasswordField passwordText = new JPasswordField();
+        passwordText.setBounds(100,50,165,25);
+        panel.add(passwordText);
+
+        JButton buttonLogin = new JButton("Login");
+        buttonLogin.setBounds(10,80,80,25);
+        panel.add(buttonLogin);
+
+        JLabel success = new JLabel("");
+        success.setBounds(10,110,300,25);
+        panel.add(success);
+
     }
 }
