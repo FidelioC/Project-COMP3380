@@ -58,8 +58,21 @@ where season_year = 2019 and teamName = 'Portland'
 order by teamName
 
 
+/*all team home won from 2004-2020*/
+select teamName,sum(homeTeamWins) as totalWins
+from gameData
+join team on team.teamID = gameData.homeTeamID
+group by teamName
+order by totalWins DESC
 
 
+/*sign most team?*/
+select TOP 1 player.playerID, playerName, count(distinct team.teamID) as signedTeamNum
+from player
+join signed on player.playerID = signed.playerID
+join team on team.teamID = signed.teamID
+group by player.playerID, playerName
+order by signedTeamNum desc
 
 
 
