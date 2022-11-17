@@ -70,7 +70,7 @@ public class LoginPage implements ActionListener {
                             + "trustServerCertificate=false;"
                             + "loginTimeout=30;";
             try{
-                DriverManager.getConnection(connectionUrl);
+                //DriverManager.getConnection(connectionUrl);
                 isTrue = true;
             }catch(Exception s){
                 isTrue = false;

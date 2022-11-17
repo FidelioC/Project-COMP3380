@@ -1,14 +1,17 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-public class QueryPage {
+public class QueryPage implements ActionListener {
     private JFrame frame;
     private JPanel panel;
     private Connection connection;
@@ -17,10 +20,13 @@ public class QueryPage {
     private String username;
     private String password;
     private String resultTableName;
+    private JButton[] allButtons;
 
+    private int buttonHeight = 50;
     public QueryPage() {
         Properties prop = new Properties();
         String fileName = "auth.cfg";
+        allButtons = new JButton[10];
 
         try {
             FileInputStream configFile = new FileInputStream(fileName);
@@ -37,14 +43,28 @@ public class QueryPage {
         frame = new JFrame("Queries");
         panel = new JPanel();
         panel.setLayout(null);
-        queryButtons();
+        insertAllButtons();
+        //queryButtons();
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(panel);
-        frame.setSize(500, 300);
+        frame.setSize(500, buttonHeight * allButtons.length + buttonHeight);
         frame.setVisible(true);
     }
 
+    private void insertAllButtons(){
+        int xPos = 0;
+        int yPos = 0;
+        int buttonWidth = 350;
+
+        for(int i=0; i<allButtons.length; i++){
+            allButtons[i] = new JButton();
+            allButtons[i].setBounds(xPos, yPos, buttonWidth, buttonHeight);
+            allButtons[i].setHorizontalAlignment(SwingConstants.LEFT);
+            panel.add(allButtons[i]);
+            yPos += buttonHeight;
+        }
+    }
     public void runQuery() {
         try {
             connectionUrl =
@@ -132,6 +152,9 @@ public class QueryPage {
         panel.add(buttonCity);
     }
 
+    public void actionPerformed(ActionEvent e){
+
+    }
     public void setUsername(String theUsername){
         username = theUsername;
     }
