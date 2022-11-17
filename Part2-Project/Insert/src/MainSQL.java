@@ -1,3 +1,4 @@
+import javax.swing.plaf.nimbus.State;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -51,22 +52,17 @@ public class MainSQL {
             File season = new File("csvfiles/season.csv");
             File generate = new File("csvfiles/generate.csv");
             File compete = new File("csvfiles/compete.csv");
-            //File play = new File("play.csv");
             File signed = new File("csvfiles/signed.csv");
             File leaderboard = new File ("csvfiles/leaderboard.csv");
 
             insertInto(connection, city, "city");
             insertInto(connection, conference, "conference");
             insertInto(connection, team, "team");
-
-
             insertInto(connection, gameData, "gameData"); //7 minutes to finish
-
             insertInto(connection, player, "player"); //3 minutes to finish
             insertInto(connection, season, "season");
             insertInto(connection, generate, "generate"); //14 minutes to finish
             insertInto(connection, compete, "compete");
-            //insertInto(connection, play, "play");
             insertInto(connection,signed, "signed");
             insertInto(connection,leaderboard, "leaderboard");//32 minutes
         }
