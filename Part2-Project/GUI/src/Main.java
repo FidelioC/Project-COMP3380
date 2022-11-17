@@ -18,11 +18,9 @@ public class Main {
     public static void main(String[] args) {
         GUI nGUI = new GUI();
     }
-
-
 }
 
-class GUI extends JFrame implements ActionListener{
+class GUI extends JFrame implements ActionListener {
 
     private JLabel label;
 
@@ -35,7 +33,8 @@ class GUI extends JFrame implements ActionListener{
     private Connection connection;
     private Statement statement;
     String connectionUrl;
-    public GUI(){
+
+    public GUI() {
         Properties prop = new Properties();
         String fileName = "auth.cfg";
         try {
@@ -52,7 +51,7 @@ class GUI extends JFrame implements ActionListener{
         String username = "ciandyf";
         String password = "7934456";
 
-        if (username == null || password == null){
+        if (username == null || password == null) {
             System.out.println("Username or password not provided.");
             System.exit(1);
         }
@@ -61,39 +60,33 @@ class GUI extends JFrame implements ActionListener{
                 "jdbc:sqlserver://uranium.cs.umanitoba.ca:1433;"
                         + "database=cs3380;"
                         + "user=" + username + ";"
-                        + "password="+ password +";"
+                        + "password=" + password + ";"
                         + "encrypt=false;"
                         + "trustServerCertificate=false;"
                         + "loginTimeout=30;";
 
         frame = new JFrame("Demo Frame");
         panel = new JPanel();
-        //frame.getContentPane();
 
-        button = new JButton("Select * from City");
+        button = new JButton("Show All City");
         Dimension size = button.getPreferredSize();
+
         button.setBounds(0, 0, 350, 50);
         button.setHorizontalAlignment(SwingConstants.LEFT);
         button.addActionListener(this);
+
         panel.setLayout(null);
         panel.add(button);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(panel);
         frame.setSize(500, 300);
         frame.setVisible(true);
     }
-    private void createPanel(JPanel thePanel){
-        //textArea = new JTextArea();
 
-    }
-    private void createButton(){
-
-    }
-
-    public void actionPerformed(ActionEvent e){
-        //String name = JOptionPane.showInputDialog(frame,"What is your name?", null);
-        try{
+    public void actionPerformed(ActionEvent e) {
+        try {
             connection = DriverManager.getConnection(connectionUrl);
             Statement statement = connection.createStatement();
 
@@ -108,22 +101,14 @@ class GUI extends JFrame implements ActionListener{
                 result += resultSet.getString(1) +
                         " " + resultSet.getString(2) + "\n";
             }
-            System.out.println(result);
-            JOptionPane.showMessageDialog(null, result,"table 1", JOptionPane.PLAIN_MESSAGE);
+            //System.out.println(result);
+            JOptionPane.showMessageDialog(null, result, "table 1", JOptionPane.PLAIN_MESSAGE);
 
             connection.close();
             statement.close();
 
-        }catch (Exception s){
+        } catch (Exception s) {
             s.printStackTrace();
         }
-
-
-
-
-
-
     }
-
-
 }
