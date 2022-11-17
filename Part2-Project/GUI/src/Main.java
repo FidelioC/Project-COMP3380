@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -133,13 +134,25 @@ class GUI{
         passwordText.setBounds(100,50,165,25);
         panel.add(passwordText);
 
-        JButton buttonLogin = new JButton("Login");
-        buttonLogin.setBounds(10,80,80,25);
-        panel.add(buttonLogin);
+
 
         JLabel success = new JLabel("");
         success.setBounds(10,110,300,25);
         panel.add(success);
+
+        char[] myPassword = {'7','9','3','4','4','5','6'};
+        JButton buttonLogin = new JButton(new AbstractAction("Login") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String user = userText.getText();
+                char[] password = passwordText.getPassword();
+                if(user.equals("ciandyf") && Arrays.compare(password,myPassword) == 0){
+                    success.setText("Login Successful!");
+                }
+            }
+        });
+        buttonLogin.setBounds(10,80,80,25);
+        panel.add(buttonLogin);
 
     }
 }
