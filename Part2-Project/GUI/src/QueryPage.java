@@ -1,0 +1,142 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+public class QueryPage {
+    private JFrame frame;
+    private JPanel panel;
+    private Connection connection;
+    private String connectionUrl;
+    private String selectSql;
+    private String username;
+    private String password;
+    private String resultTableName;
+
+    public QueryPage() {
+        Properties prop = new Properties();
+        String fileName = "auth.cfg";
+
+        try {
+            FileInputStream configFile = new FileInputStream(fileName);
+            prop.load(configFile);
+            configFile.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Could not find config file.");
+            System.exit(1);
+        } catch (IOException ex) {
+            System.out.println("Error reading config file.");
+            System.exit(1);
+        }
+
+        frame = new JFrame("Queries");
+        panel = new JPanel();
+        panel.setLayout(null);
+        queryButtons();
+
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(panel);
+        frame.setSize(500, 300);
+        frame.setVisible(true);
+    }
+
+    public void runQuery() {
+        try {
+            connectionUrl =
+                    "jdbc:sqlserver://uranium.cs.umanitoba.ca:1433;"
+                            + "database=cs3380;"
+                            + "user=" + username + ";"
+                            + "password=" + password + ";"
+                            + "encrypt=false;"
+                            + "trustServerCertificate=false;"
+                            + "loginTimeout=30;";
+
+            connection = DriverManager.getConnection(connectionUrl);
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = null;
+
+            // Create and execute a SELECT SQL statement.
+            resultSet = statement.executeQuery(selectSql);
+
+            makeTable(resultSet);
+
+            connection.close();
+            statement.close();
+
+        } catch (Exception s) {
+            s.printStackTrace();
+        }
+    }
+
+    public void makeTable(ResultSet resultSet) throws Exception {
+        JFrame tableWindow;
+        JTable table;
+
+        tableWindow = new JFrame();
+
+        // Frame Title
+        tableWindow.setTitle(resultTableName);//change to preferred display name
+
+        //get the data from result set
+        List<Object[]> data = new ArrayList<>();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+
+        //get column info and name
+        int nCol = resultSet.getMetaData().getColumnCount();
+        String[] columnNames = null;
+        columnNames = new String[nCol];
+        for (int column = 0; column < nCol; column++) {
+            columnNames[column] = metaData.getColumnName(column + 1).toUpperCase();
+        }
+
+        //get data
+        while (resultSet.next()) {
+            final Object[] row = new Object[nCol];
+            for (int columnIndex = 0; columnIndex < nCol; columnIndex++) {
+                row[columnIndex] = resultSet.getObject(columnIndex + 1);
+            }
+            data.add(row);
+        }
+
+        // Print results from select statement
+        table = new JTable(data.toArray(new Object[data.size()][nCol]), columnNames);
+        table.setBounds(30, 40, 200, 300);
+
+        // adding it to JScrollPane
+        JScrollPane sp = new JScrollPane(table);
+        tableWindow.add(sp);
+        // Frame Size
+        tableWindow.setSize(500, 200);
+        // Frame Visible = true
+        tableWindow.setVisible(true);
+
+    }
+
+    public void queryButtons() {
+        JButton buttonCity = new JButton(new AbstractAction("Show All Cities") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectSql = "select * from city";
+                resultTableName = "All Cities";
+                runQuery();
+            }
+        });
+        buttonCity.setBounds(0, 0, 350, 50);
+        buttonCity.setHorizontalAlignment(SwingConstants.LEFT);
+        panel.add(buttonCity);
+    }
+
+    public void setUsername(String theUsername){
+        username = theUsername;
+    }
+
+    public void setPassword(String thePassword){
+        password = thePassword;
+    }
+}
