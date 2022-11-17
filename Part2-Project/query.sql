@@ -66,6 +66,14 @@ group by teamName
 order by totalWins DESC
 
 
+/*sign most team?*/
+select TOP 1 player.playerID, playerName, count(distinct team.teamID) as signedTeamNum
+from player
+join signed on player.playerID = signed.playerID
+join team on team.teamID = signed.teamID
+group by player.playerID, playerName
+order by signedTeamNum desc
+
 
 
 
