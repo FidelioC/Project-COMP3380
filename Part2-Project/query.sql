@@ -115,15 +115,13 @@ order by teamName
 
 
 
+/* ============== NOT YET INSERTED INTO CODE =================*/
 
 /*Show the game ID, and home team where home team get specific points*/
 SELECT gameID, nickname
 from gameData
 left join team on team.teamID = gameData.homeTeamID
 where ptsHome > 135; 
-
-
-
 
 
 
@@ -134,9 +132,6 @@ join signed on player.playerID = signed.playerID
 join team on team.teamID = signed.teamID
 group by player.playerID, playerName
 order by signedTeamNum desc
-
-
-
 
 /*search by date (MM-DD-YYYY) show all the home team data that day*/
 select distinct homeTeamID, ptsHome, fgPctHome, ftPctHome, fg3PctHome, astHome, rebHome
