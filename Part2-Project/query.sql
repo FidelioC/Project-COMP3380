@@ -102,7 +102,13 @@ from gameData
 join team on team.teamID = gameData.teamID
 where team.teamName like '%Atlanta%';
 
-
+/*The roster of a team on a specific year*/
+SELECT teamName, player.playerName, season_year
+from compete
+join team on team.teamID = compete.teamID
+join player on compete.playerID = player.playerID
+where season_year like '%2019%' and teamName like '%Portland%'
+order by teamName
 
 
 
@@ -116,13 +122,7 @@ from gameData
 left join team on team.teamID = gameData.homeTeamID
 where ptsHome > 135; 
 
-/*The roster of a team on a specific season*/
-SELECT teamName, player.playerName, season_year
-from compete
-join team on team.teamID = compete.teamID
-join player on compete.playerID = player.playerID
-where season_year = 2019 and teamName = 'Portland'
-order by teamName
+
 
 
 

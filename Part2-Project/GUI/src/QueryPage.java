@@ -20,7 +20,7 @@ public class QueryPage implements ActionListener {
     private String selectSql;
     private String username;
     private String password;
-    private int totalQueries = 9;
+    private int totalQueries = 10;
     private JButton[] allButtons;
     private String[] allQueries;
     private String[] buttonTitle;
@@ -28,6 +28,7 @@ public class QueryPage implements ActionListener {
     private int frameHeight = 500;
     private boolean askInput;
     private String userInput;
+    private String userInput2;
     private JFrame tableWindow;
     private boolean tableOpened;
     public QueryPage() {
@@ -129,7 +130,12 @@ public class QueryPage implements ActionListener {
             ResultSet resultSet = null;
 
             if(askInput){
-                statement.setString(1,"%" + userInput + "%");
+                if(index != 9){
+                    statement.setString(1,"%" + userInput + "%");
+                }else{
+                    statement.setString(1,"%" + userInput + "%");
+                    statement.setString(2,"%" + userInput2 + "%");
+                }
             }
             // Create and execute a SELECT SQL statement.
             resultSet = statement.executeQuery();
@@ -145,14 +151,17 @@ public class QueryPage implements ActionListener {
             s.printStackTrace();
         }
     }
-    private String askInputUser(int index){
-        String res = "";
+    private void askInputUser(int index){
+
         if(index == 3) {
-            res = JOptionPane.showInputDialog("Please Enter A Name");
+            userInput = JOptionPane.showInputDialog("Please Enter A Name");
         } else if (index == 7 || index == 8) {
-            res = JOptionPane.showInputDialog("Please Enter A Team Name");
+            userInput = JOptionPane.showInputDialog("Please Enter A Team Name");
+        } else if (index == 9) {
+            userInput = JOptionPane.showInputDialog("Please Enter A Year (2009-2019)");
+            userInput2 = JOptionPane.showInputDialog("Please Enter A Team Name");
         }
-        return res;
+
     }
     public void actionPerformed(ActionEvent e){
         int index = -1;
@@ -162,9 +171,9 @@ public class QueryPage implements ActionListener {
                 index = i;
             }
         }
-        if(index == 3 || index == 7 || index == 8){
+        if(index == 3 || index == 7 || index == 8 || index == 9){
             askInput = true;
-            userInput = askInputUser(index);
+            askInputUser(index);
         }
         if(tableOpened){
             tableWindow.dispose();
@@ -182,8 +191,9 @@ public class QueryPage implements ActionListener {
                 "List of Teams On Each Conference",
                 "Top 5 Team In East Conference That Has Highest Assists When Playing At Home",
                 "Total Wins of Each Team At Home from 2004-2020",
-                "Each Team Regular Season Records",
-                "Each Team Pre-Season Records"
+                "Team 'X' Regular Season Records",
+                "Team 'X' Pre-Season Records",
+                "The roster of 'X' team on 'Y' year"
         };
         buttonTitle = theButtonTitle;
     }
@@ -281,7 +291,14 @@ public class QueryPage implements ActionListener {
                         "       gameData.gamesLost, gameData.winPercent\n" +
                         "from gameData\n" +
                         "join team on team.teamID = gameData.teamID\n" +
-                        "where team.teamName like ?;"
+                        "where team.teamName like ?;",
+
+                "SELECT teamName, player.playerName, season_year\n" +
+                        "from compete\n" +
+                        "join team on team.teamID = compete.teamID\n" +
+                        "join player on compete.playerID = player.playerID\n" +
+                        "where season_year like ? and teamName like ?\n" +
+                        "order by teamName"
         };
         allQueries = theQueries;
     }
