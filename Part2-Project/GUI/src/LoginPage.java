@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -27,6 +28,10 @@ public class LoginPage implements ActionListener {
         buttonLogin.addActionListener(this);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(panel);
+
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+
         frame.setSize(500, 300);
         frame.setVisible(true);
     }
@@ -70,7 +75,7 @@ public class LoginPage implements ActionListener {
                             + "trustServerCertificate=false;"
                             + "loginTimeout=30;";
             try{
-                //DriverManager.getConnection(connectionUrl);
+                DriverManager.getConnection(connectionUrl);
                 isTrue = true;
             }catch(Exception s){
                 isTrue = false;

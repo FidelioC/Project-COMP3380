@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,13 +21,100 @@ public class QueryPage implements ActionListener {
     private String username;
     private String password;
     private String resultTableName;
+    private int totalQueries = 4;
     private JButton[] allButtons;
-
-    private int buttonHeight = 50;
+    private String[] allQueries;
+    private String[] buttonTitle;
+    private int frameWidth = 500;
+    private int frameHeight = 500;
     public QueryPage() {
+        connectDatabase();
+        pageSetup();
+        setAllQueries();
+
+        for (int i=0; i<totalQueries; i++){
+            allButtons[i].addActionListener(this);
+        }
+    }
+
+    private void pageSetup(){
+        frame = new JFrame("Queries");
+        frame.setLayout(new BorderLayout());
+
+        setTitle();
+        panel.setBorder(new EmptyBorder(10,30,2,30));
+        panel.setLayout(new GridLayout(totalQueries,1,10,5));
+        insertAllButtons();
+
+        frame.add(panel);
+
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setSize(frameWidth, frameHeight);
+        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+        frame.setVisible(true);
+    }
+    private void setTitle(){
+        JPanel topPanel = new JPanel();
+        panel = new JPanel();
+
+        JLabel title = new JLabel("NBA Dataset Queries");
+        title.setSize(100,100);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 25);
+        title.setFont(font);
+
+        topPanel.add(title);
+        frame.add(topPanel,BorderLayout.NORTH);
+    }
+    private void setAllButtonsTitle(){
+        String[] theButtonTitle = {
+            "City That Has Multiple Teams",
+            "Highest Score a Team Has Achieved At Home",
+            "Players That Only Has Been On 1 Team",
+            "Which Team Does the Player 'X' Played For Each Season"
+        };
+        buttonTitle = theButtonTitle;
+    }
+    private void setAllQueries(){
+        String[] theQueries = {
+            "SELECT cityName\n" +
+                    "from team\n" +
+                    "join city on city.cityID = team.cityID\n" +
+                    "group by cityName\n" +
+                    "having count(cityName) > 1",
+
+            "with allTeam as(\n" +
+                    "  SELECT team.teamID, teamName, gameData.ptsHome, gameData.gameID\n" +
+                    "  from team\n" +
+                    "  join generate on team.teamID = generate.teamID\n" +
+                    "  join gameData on generate.gameID = gameData.gameID\n" +
+                    "  where team.teamID = gameData.homeTeamID\n" +
+                    ")\n" +
+                    "select teamID, teamName, max(ptsHome) as HighestPoint\n" +
+                    "from allTeam\n" +
+                    "group by teamID, teamName\n" +
+                    "order by teamID desc;",
+
+            "select player.playerID, playerName, count(team.teamID) as TeamCount\n" +
+                    "from player\n" +
+                    "join signed on player.playerID = signed.playerID\n" +
+                    "join team on team.teamID = signed.teamID\n" +
+                    "group by player.playerID, playerName\n" +
+                    "having count(team.teamID) = 1",
+
+            "SELECT player.playerName, teamName, compete.season_year from player\n" +
+                    "join season on season.playerID = player.playerID\n" +
+                    "join compete on player.playerID = compete.playerID \n" +
+                    "      and season.season_year = compete.season_year\n" +
+                    "join team on team.teamID = compete.teamID\n" +
+                    "where playerName = 'Kobe Bryant';"
+        };
+
+        allQueries = theQueries;
+    }
+    private void connectDatabase(){
         Properties prop = new Properties();
         String fileName = "auth.cfg";
-        allButtons = new JButton[10];
 
         try {
             FileInputStream configFile = new FileInputStream(fileName);
@@ -40,33 +128,33 @@ public class QueryPage implements ActionListener {
             System.exit(1);
         }
 
-        frame = new JFrame("Queries");
-        panel = new JPanel();
-        panel.setLayout(null);
-        insertAllButtons();
-        //queryButtons();
+        username = (prop.getProperty("username"));
+        password = (prop.getProperty("password"));
 
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(panel);
-        frame.setSize(500, buttonHeight * allButtons.length + buttonHeight);
-        frame.setVisible(true);
+        if (username == null || password == null){
+            System.out.println("Username or password not provided.");
+            System.exit(1);
+        }
     }
-
     private void insertAllButtons(){
+        setAllButtonsTitle();
+        allButtons = new JButton[totalQueries];
         int xPos = 0;
         int yPos = 0;
-        int buttonWidth = 350;
+        int buttonHeight = frameHeight/allButtons.length;
+        int buttonWidth = frameWidth;
 
         for(int i=0; i<allButtons.length; i++){
-            allButtons[i] = new JButton();
+            allButtons[i] = new JButton(buttonTitle[i]);
             allButtons[i].setBounds(xPos, yPos, buttonWidth, buttonHeight);
-            allButtons[i].setHorizontalAlignment(SwingConstants.LEFT);
+            allButtons[i].setHorizontalAlignment(SwingConstants.CENTER);
             panel.add(allButtons[i]);
             yPos += buttonHeight;
         }
     }
-    public void runQuery() {
+    public void runQuery(String theQuery) {
         try {
+            selectSql = theQuery;
             connectionUrl =
                     "jdbc:sqlserver://uranium.cs.umanitoba.ca:1433;"
                             + "database=cs3380;"
@@ -133,8 +221,12 @@ public class QueryPage implements ActionListener {
         tableWindow.add(sp);
         // Frame Size
         tableWindow.setSize(500, 200);
+
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        tableWindow.setLocation(dim.width/2-tableWindow.getSize().width/2, dim.height/2-tableWindow.getSize().height/2);
         // Frame Visible = true
         tableWindow.setVisible(true);
+
 
     }
 
@@ -144,7 +236,7 @@ public class QueryPage implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 selectSql = "select * from city";
                 resultTableName = "All Cities";
-                runQuery();
+                //runQuery();
             }
         });
         buttonCity.setBounds(0, 0, 350, 50);
@@ -153,8 +245,16 @@ public class QueryPage implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e){
+        int index = -1;
 
+        for(int i=0; i<allButtons.length; i++){
+            if(e.getSource().equals(allButtons[i])){
+                index = i;
+            }
+        }
+        runQuery(allQueries[index]);
     }
+
     public void setUsername(String theUsername){
         username = theUsername;
     }

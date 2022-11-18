@@ -26,7 +26,7 @@ group by teamID, teamName
 order by teamID desc;
 
 /*players stay in one team*/
-select player.playerID, playerName, count(team.teamID)
+select player.playerID, playerName, count(team.teamID) as TeamCount
 from player
 join signed on player.playerID = signed.playerID
 join team on team.teamID = signed.teamID
