@@ -20,7 +20,7 @@ public class QueryPage implements ActionListener {
     private String selectSql;
     private String username;
     private String password;
-    private int totalQueries = 7;
+    private int totalQueries = 9;
     private JButton[] allButtons;
     private String[] allQueries;
     private String[] buttonTitle;
@@ -69,74 +69,7 @@ public class QueryPage implements ActionListener {
         topPanel.add(title);
         frame.add(topPanel,BorderLayout.NORTH);
     }
-    private void setAllButtonsTitle(){
-        String[] theButtonTitle = {
-            "City That Has Multiple Teams",
-            "Highest Score a Team Has Achieved At Home",
-            "Players That Never Change Any Team",
-            "Which Team Does the Player 'X' Played For Each Season",
-            "List of Teams on each conference",
-            "Top 5 Team In East Conference That Has Highest Assists When Playing At Home",
-            "Total Wins of Each Team from 2004-2020"
-        };
-        buttonTitle = theButtonTitle;
-    }
-    private void setAllQueries(){
-        String[] theQueries = {
-            "SELECT cityName\n" +
-                    "from team\n" +
-                    "join city on city.cityID = team.cityID\n" +
-                    "group by cityName\n" +
-                    "having count(cityName) > 1",
 
-            "with allTeam as(\n" +
-                    "  SELECT team.teamID, teamName, gameData.ptsHome, gameData.gameID\n" +
-                    "  from team\n" +
-                    "  join generate on team.teamID = generate.teamID\n" +
-                    "  join gameData on generate.gameID = gameData.gameID\n" +
-                    "  where team.teamID = gameData.homeTeamID\n" +
-                    ")\n" +
-                    "select teamID, teamName, max(ptsHome) as HighestPoint\n" +
-                    "from allTeam\n" +
-                    "group by teamID, teamName\n" +
-                    "order by teamID desc;",
-
-            "select player.playerID, playerName\n" +
-                    "from player\n" +
-                    "join signed on player.playerID = signed.playerID\n" +
-                    "join team on team.teamID = signed.teamID\n" +
-                    "group by player.playerID, playerName\n" +
-                    "having count(team.teamID) = 1",
-
-            "SELECT player.playerName, teamName, compete.season_year from player\n" +
-                    "join season on season.playerID = player.playerID\n" +
-                    "join compete on player.playerID = compete.playerID \n" +
-                    "and season.season_year = compete.season_year\n" +
-                    "join team on team.teamID = compete.teamID\n" +
-                    "where playerName like ?;",
-
-            "SELECT teamName, conference\n" +
-                    "from team\n" +
-                    "join conference on conference.conferenceID = team.conferenceID\n" +
-                    "ORDER by conference",
-
-            "select top 5 teamName,astHome\n" +
-                    "from gameData\n" +
-                    "join team on team.teamID = gameData.homeTeamID\n" +
-                    "join conference on conference.conferenceID = team.conferenceID\n" +
-                    "where conference.conference like '%east%'\n"+
-                    "group by teamName,astHome\n" +
-                    "order by astHome desc",
-
-            "select teamName,sum(homeTeamWins) as totalWins\n" +
-                    "from gameData\n" +
-                    "join team on team.teamID = gameData.homeTeamID\n" +
-                    "group by teamName\n" +
-                    "order by totalWins DESC"
-        };
-
-        allQueries = theQueries;
-    }
     private void connectDatabase(){
         Properties prop = new Properties();
         String fileName = "auth.cfg";
@@ -212,8 +145,14 @@ public class QueryPage implements ActionListener {
             s.printStackTrace();
         }
     }
-    private String askInputUser(){
-        return JOptionPane.showInputDialog("Please Enter A Name");
+    private String askInputUser(int index){
+        String res = "";
+        if(index == 3) {
+            res = JOptionPane.showInputDialog("Please Enter A Name");
+        } else if (index == 7 || index == 8) {
+            res = JOptionPane.showInputDialog("Please Enter A Team Name");
+        }
+        return res;
     }
     public void actionPerformed(ActionEvent e){
         int index = -1;
@@ -223,15 +162,128 @@ public class QueryPage implements ActionListener {
                 index = i;
             }
         }
-        if(index == 3){
+        if(index == 3 || index == 7 || index == 8){
             askInput = true;
-            userInput = askInputUser();
+            userInput = askInputUser(index);
         }
         if(tableOpened){
             tableWindow.dispose();
             tableOpened = false;
         }
         runQuery(index);
+    }
+
+    private void setAllButtonsTitle(){
+        String[] theButtonTitle = {
+                "City That Has Multiple Teams",
+                "Highest Score a Team Has Achieved At Home",
+                "Players That Never Change Any Team",
+                "Which Team Does the Player 'X' Played For Each Year",
+                "List of Teams On Each Conference",
+                "Top 5 Team In East Conference That Has Highest Assists When Playing At Home",
+                "Total Wins of Each Team At Home from 2004-2020",
+                "Each Team Regular Season Records",
+                "Each Team Pre-Season Records"
+        };
+        buttonTitle = theButtonTitle;
+    }
+    private void setAllQueries(){
+        String[] theQueries = {
+                "SELECT cityName\n" +
+                        "from team\n" +
+                        "join city on city.cityID = team.cityID\n" +
+                        "group by cityName\n" +
+                        "having count(cityName) > 1",
+
+                "with allTeam as(\n" +
+                        "  SELECT team.teamID, teamName, gameData.ptsHome, gameData.gameID\n" +
+                        "  from team\n" +
+                        "  join generate on team.teamID = generate.teamID\n" +
+                        "  join gameData on generate.gameID = gameData.gameID\n" +
+                        "  where team.teamID = gameData.homeTeamID\n" +
+                        ")\n" +
+                        "select teamID, teamName, max(ptsHome) as HighestPoint\n" +
+                        "from allTeam\n" +
+                        "group by teamID, teamName\n" +
+                        "order by teamID desc;",
+
+                "select player.playerID, playerName\n" +
+                        "from player\n" +
+                        "join signed on player.playerID = signed.playerID\n" +
+                        "join team on team.teamID = signed.teamID\n" +
+                        "group by player.playerID, playerName\n" +
+                        "having count(team.teamID) = 1",
+
+                "SELECT player.playerName, teamName, compete.season_year from player\n" +
+                        "join season on season.playerID = player.playerID\n" +
+                        "join compete on player.playerID = compete.playerID \n" +
+                        "and season.season_year = compete.season_year\n" +
+                        "join team on team.teamID = compete.teamID\n" +
+                        "where playerName like ?;",
+
+                "SELECT teamName, conference\n" +
+                        "from team\n" +
+                        "join conference on conference.conferenceID = team.conferenceID\n" +
+                        "ORDER by conference",
+
+                "select top 5 teamName,astHome\n" +
+                        "from gameData\n" +
+                        "join team on team.teamID = gameData.homeTeamID\n" +
+                        "join conference on conference.conferenceID = team.conferenceID\n" +
+                        "where conference.conference like '%east%'\n"+
+                        "group by teamName,astHome\n" +
+                        "order by astHome desc",
+
+                "select teamName,sum(homeTeamWins) as totalWins\n" +
+                        "from gameData\n" +
+                        "join team on team.teamID = gameData.homeTeamID\n" +
+                        "group by teamName\n" +
+                        "order by totalWins DESC",
+
+                "with eachPreSeason as(\n" +
+                        "  SELECT teamID, seasonID, max(gamesPlayed) as totalGames\n" +
+                        "  from leaderboard \n" +
+                        "  where seasonID > 20000\n" +
+                        "  group by teamID, seasonID\n" +
+                        "),\n" +
+                        "gameData as(\n" +
+                        "  SELECT DISTINCT eachPreSeason.teamID, eachPreSeason.seasonID, \n" +
+                        "                eachPreSeason.totalGames, gamesWon, gamesLost, winPercent\n" +
+                        "  from eachPreSeason\n" +
+                        "  join leaderboard on leaderboard.teamID = eachPreSeason.teamID and\n" +
+                        "  leaderboard.seasonID = eachPreSeason.seasonID AND\n" +
+                        "  leaderboard.gamesPlayed = eachPreSeason.totalGames\n" +
+                        ")\n" +
+                        "\n" +
+                        "SELECT team.teamName, gameData.seasonID, gameData.totalGames, gameData.gamesWon, \n" +
+                        "       gameData.gamesLost, gameData.winPercent\n" +
+                        "from gameData\n" +
+                        "join team on team.teamID = gameData.teamID\n" +
+                        "where team.teamName like ?;",
+
+
+                "with eachPreSeason as(\n" +
+                        "  SELECT teamID, seasonID, max(gamesPlayed) as totalGames\n" +
+                        "  from leaderboard \n" +
+                        "  where seasonID < 20000\n" +
+                        "  group by teamID, seasonID\n" +
+                        "),\n" +
+                        "gameData as(\n" +
+                        "  SELECT DISTINCT eachPreSeason.teamID, eachPreSeason.seasonID, \n" +
+                        "                eachPreSeason.totalGames, gamesWon, gamesLost, winPercent\n" +
+                        "  from eachPreSeason\n" +
+                        "  join leaderboard on leaderboard.teamID = eachPreSeason.teamID and\n" +
+                        "  leaderboard.seasonID = eachPreSeason.seasonID AND\n" +
+                        "  leaderboard.gamesPlayed = eachPreSeason.totalGames\n" +
+                        ")\n" +
+                        "\n" +
+                        "SELECT team.teamName, gameData.seasonID, gameData.totalGames, gameData.gamesWon, \n" +
+                        "       gameData.gamesLost, gameData.winPercent\n" +
+                        "from gameData\n" +
+                        "join team on team.teamID = gameData.teamID\n" +
+                        "where team.teamName like ?;"
+        };
+        allQueries = theQueries;
     }
     public void makeTable(ResultSet resultSet, int index) throws Exception {
         tableOpened = true;
@@ -262,13 +314,13 @@ public class QueryPage implements ActionListener {
 
         // Print results from select statement
         table = new JTable(data.toArray(new Object[data.size()][nCol]), columnNames);
-        table.setBounds(30, 40, 200, 300);
+        table.setBounds(30, 40, 400, 300);
 
         // adding it to JScrollPane
         JScrollPane sp = new JScrollPane(table);
         tableWindow.add(sp);
         // Frame Size
-        tableWindow.setSize(500, 200);
+        tableWindow.setSize(600, 300);
 
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         tableWindow.setLocation(dim.width/2-tableWindow.getSize().width/2, dim.height/2-tableWindow.getSize().height/2);

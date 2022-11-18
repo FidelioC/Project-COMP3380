@@ -5,13 +5,6 @@ join city on city.cityID = team.cityID
 group by cityName
 having count(cityName) > 1
 
-
-/*Show the game ID, and home team where home team get specific points*/
-SELECT gameID, nickname
-from gameData
-left join team on team.teamID = gameData.homeTeamID
-where ptsHome > 135; 
-
 /*the highest score each team has made at home*/
 with allTeam as(
   SELECT team.teamID, teamName, gameData.ptsHome, gameData.gameID
@@ -33,7 +26,7 @@ join team on team.teamID = signed.teamID
 group by player.playerID, playerName
 having count(team.teamID) = 1
 
-/* A player play on which seasons and play on what team for each of that season. 
+/* A player play on what team for each year. 
 Search by the player name*/
 SELECT player.playerName, player.playerID, compete.season_year from player
 join season on season.playerID = player.playerID
@@ -42,12 +35,89 @@ join compete on player.playerID = compete.playerID
 join team on team.teamID = compete.teamID
 where player.playerName like '%Kobe Bryant%';
 
-
 /*teams on each conference*/
 SELECT teamName, conference
 from team
 join conference on conference.conferenceID = team.conferenceID
 ORDER by conference
+
+/*top 5 team in east conference has highest assists when at home*/
+select top 5 teamName,astHome
+from gameData
+join team on team.teamID = gameData.homeTeamID
+join conference on conference.conferenceID = team.conferenceID
+where conference.conference like '%east%'
+group by teamName,astHome
+order by astHome desc
+
+/*all team home won from 2004-2020*/ 
+select teamName,sum(homeTeamWins) as totalWins
+from gameData
+join team on team.teamID = gameData.homeTeamID
+group by teamName
+order by totalWins DESC
+
+
+
+
+/*each team regular season record*/
+with eachPreSeason as(
+  SELECT teamID, seasonID, max(gamesPlayed) as totalGames
+  from leaderboard 
+  where seasonID > 20000
+  group by teamID, seasonID
+),
+gameData as(
+  SELECT DISTINCT eachPreSeason.teamID, eachPreSeason.seasonID, 
+                eachPreSeason.totalGames, gamesWon, gamesLost, winPercent
+  from eachPreSeason
+  join leaderboard on leaderboard.teamID = eachPreSeason.teamID and
+  leaderboard.seasonID = eachPreSeason.seasonID AND
+  leaderboard.gamesPlayed = eachPreSeason.totalGames
+)
+
+SELECT team.teamName, gameData.seasonID, gameData.totalGames, gameData.gamesWon, 
+       gameData.gamesLost, gameData.winPercent
+from gameData
+join team on team.teamID = gameData.teamID
+where team.teamName like '%Atlanta%';
+
+
+/* each team preseason record on each season*/
+with eachPreSeason as(
+  SELECT teamID, seasonID, max(gamesPlayed) as totalGames
+  from leaderboard 
+  where seasonID < 20000
+  group by teamID, seasonID
+),
+gameData as(
+  SELECT DISTINCT eachPreSeason.teamID, eachPreSeason.seasonID, 
+                eachPreSeason.totalGames, gamesWon, gamesLost, winPercent
+  from eachPreSeason
+  join leaderboard on leaderboard.teamID = eachPreSeason.teamID and
+  leaderboard.seasonID = eachPreSeason.seasonID AND
+  leaderboard.gamesPlayed = eachPreSeason.totalGames
+)
+
+SELECT team.teamName, gameData.seasonID, gameData.totalGames, gameData.gamesWon, 
+       gameData.gamesLost, gameData.winPercent
+from gameData
+join team on team.teamID = gameData.teamID
+where team.teamName like '%Atlanta%';
+
+
+
+
+
+
+
+
+
+/*Show the game ID, and home team where home team get specific points*/
+SELECT gameID, nickname
+from gameData
+left join team on team.teamID = gameData.homeTeamID
+where ptsHome > 135; 
 
 /*The roster of a team on a specific season*/
 SELECT teamName, player.playerName, season_year
@@ -58,12 +128,6 @@ where season_year = 2019 and teamName = 'Portland'
 order by teamName
 
 
-/*all team home won from 2004-2020*/
-select teamName,sum(homeTeamWins) as totalWins
-from gameData
-join team on team.teamID = gameData.homeTeamID
-group by teamName
-order by totalWins DESC
 
 
 /*sign most team?*/
@@ -75,18 +139,13 @@ group by player.playerID, playerName
 order by signedTeamNum desc
 
 
-/*top 5 team in east conference has highest assists when at home*/
-select top 5 teamName,astHome
-from gameData
-join team on team.teamID = gameData.homeTeamID
-join conference on conference.conferenceID = team.conferenceID
-where conference.conference like '%east%'
-group by teamName,astHome
-order by astHome desc
+
 
 /*search by date (MM-DD-YYYY) show all the home team data that day*/
-select gameDate, teamName,ptsHome, fgPctHome, ftPctHome, fg3PctHome, astHome,rebHome
+select distinct homeTeamID, ptsHome, fgPctHome, ftPctHome, fg3PctHome, astHome, rebHome
 from gameData
-join team on team.teamID = gameData.homeTeamID
-where gameDate = '10/8/2003'
+join generate on gameData.gameID = generate.gameID
+join team on team.teamID = generate.teamID
+
+
 
