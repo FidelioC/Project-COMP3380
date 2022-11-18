@@ -75,8 +75,8 @@ group by player.playerID, playerName
 order by signedTeamNum desc
 
 
-/*which team in east conference has highest assists of the home team*/
-select top 1 teamName,astHome
+/*top 5 team in east conference has highest assists when at home*/
+select top 5 teamName,astHome
 from gameData
 join team on team.teamID = gameData.homeTeamID
 join conference on conference.conferenceID = team.conferenceID

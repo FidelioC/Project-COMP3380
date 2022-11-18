@@ -20,11 +20,11 @@ public class QueryPage implements ActionListener {
     private String selectSql;
     private String username;
     private String password;
-    private int totalQueries = 5;
+    private int totalQueries = 7;
     private JButton[] allButtons;
     private String[] allQueries;
     private String[] buttonTitle;
-    private int frameWidth = 500;
+    private int frameWidth = 700;
     private int frameHeight = 500;
     private boolean askInput;
     private String userInput;
@@ -75,7 +75,9 @@ public class QueryPage implements ActionListener {
             "Highest Score a Team Has Achieved At Home",
             "Players That Never Change Any Team",
             "Which Team Does the Player 'X' Played For Each Season",
-            "List of Teams on each conference"
+            "List of Teams on each conference",
+            "Top 5 Team In East Conference That Has Highest Assists When Playing At Home",
+            "Total Wins of Each Team from 2004-2020"
         };
         buttonTitle = theButtonTitle;
     }
@@ -109,14 +111,28 @@ public class QueryPage implements ActionListener {
             "SELECT player.playerName, teamName, compete.season_year from player\n" +
                     "join season on season.playerID = player.playerID\n" +
                     "join compete on player.playerID = compete.playerID \n" +
-                    "      and season.season_year = compete.season_year\n" +
+                    "and season.season_year = compete.season_year\n" +
                     "join team on team.teamID = compete.teamID\n" +
                     "where playerName = ?;",
 
             "SELECT teamName, conference\n" +
                     "from team\n" +
                     "join conference on conference.conferenceID = team.conferenceID\n" +
-                    "ORDER by conference"
+                    "ORDER by conference",
+
+            "select top 5 teamName,astHome\n" +
+                    "from gameData\n" +
+                    "join team on team.teamID = gameData.homeTeamID\n" +
+                    "join conference on conference.conferenceID = team.conferenceID\n" +
+                    "where conference.conference like '%east%'\n"+
+                    "group by teamName,astHome\n" +
+                    "order by astHome desc",
+
+            "select teamName,sum(homeTeamWins) as totalWins\n" +
+                    "from gameData\n" +
+                    "join team on team.teamID = gameData.homeTeamID\n" +
+                    "group by teamName\n" +
+                    "order by totalWins DESC"
         };
 
         allQueries = theQueries;
