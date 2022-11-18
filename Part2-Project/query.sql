@@ -57,9 +57,6 @@ join team on team.teamID = gameData.homeTeamID
 group by teamName
 order by totalWins DESC
 
-
-
-
 /*each team regular season record*/
 with eachPreSeason as(
   SELECT teamID, seasonID, max(gamesPlayed) as totalGames
