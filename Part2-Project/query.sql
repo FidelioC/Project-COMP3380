@@ -84,3 +84,9 @@ where conference.conference like '%east%'
 group by teamName,astHome
 order by astHome desc
 
+/*search by date (MM-DD-YYYY) show all the home team data that day*/
+select gameDate, teamName,ptsHome, fgPctHome, ftPctHome, fg3PctHome, astHome,rebHome
+from gameData
+join team on team.teamID = gameData.homeTeamID
+where gameDate = '10/8/2003'
+
