@@ -6,7 +6,7 @@ group by cityName
 having count(cityName) > 1
 
 
-/*Show the game ID, and home team where home team get 135+ points*/
+/*Show the game ID, and home team where home team get specific points*/
 SELECT gameID, nickname
 from gameData
 left join team on team.teamID = gameData.homeTeamID
@@ -40,7 +40,7 @@ join season on season.playerID = player.playerID
 join compete on player.playerID = compete.playerID 
       and season.season_year = compete.season_year
 join team on team.teamID = compete.teamID
-where player.playerID = '977';
+where player.playerName = 'Kobe Bryant';
 
 
 /*teams on each conference*/

@@ -20,17 +20,16 @@ public class QueryPage implements ActionListener {
     private String selectSql;
     private String username;
     private String password;
-    private String resultTableName;
-    private int totalQueries = 4;
+    private int totalQueries = 5;
     private JButton[] allButtons;
     private String[] allQueries;
     private String[] buttonTitle;
     private int frameWidth = 500;
     private int frameHeight = 500;
-
     private boolean askInput;
-
     private String userInput;
+    private JFrame tableWindow;
+    private boolean tableOpened;
     public QueryPage() {
         connectDatabase();
         pageSetup();
@@ -75,7 +74,8 @@ public class QueryPage implements ActionListener {
             "City That Has Multiple Teams",
             "Highest Score a Team Has Achieved At Home",
             "Players That Never Change Any Team",
-            "Which Team Does the Player 'X' Played For Each Season"
+            "Which Team Does the Player 'X' Played For Each Season",
+            "List of Teams on each conference"
         };
         buttonTitle = theButtonTitle;
     }
@@ -111,7 +111,12 @@ public class QueryPage implements ActionListener {
                     "join compete on player.playerID = compete.playerID \n" +
                     "      and season.season_year = compete.season_year\n" +
                     "join team on team.teamID = compete.teamID\n" +
-                    "where playerName = ?;"
+                    "where playerName = ?;",
+
+            "SELECT teamName, conference\n" +
+                    "from team\n" +
+                    "join conference on conference.conferenceID = team.conferenceID\n" +
+                    "ORDER by conference"
         };
 
         allQueries = theQueries;
@@ -152,13 +157,14 @@ public class QueryPage implements ActionListener {
             allButtons[i] = new JButton(buttonTitle[i]);
             allButtons[i].setBounds(xPos, yPos, buttonWidth, buttonHeight);
             allButtons[i].setHorizontalAlignment(SwingConstants.CENTER);
+            allButtons[i].setFocusable(false);
             panel.add(allButtons[i]);
             yPos += buttonHeight;
         }
     }
-    public void runQuery(String theQuery) {
+    public void runQuery(int index) {
         try {
-            selectSql = theQuery;
+            selectSql = allQueries[index];
             connectionUrl =
                     "jdbc:sqlserver://uranium.cs.umanitoba.ca:1433;"
                             + "database=cs3380;"
@@ -179,7 +185,7 @@ public class QueryPage implements ActionListener {
             // Create and execute a SELECT SQL statement.
             resultSet = statement.executeQuery();
 
-            makeTable(resultSet);
+            makeTable(resultSet, index);
 
             askInput = false;
 
@@ -190,18 +196,32 @@ public class QueryPage implements ActionListener {
             s.printStackTrace();
         }
     }
-
     private String askInputUser(){
         return JOptionPane.showInputDialog("Please Enter A Name");
     }
-    public void makeTable(ResultSet resultSet) throws Exception {
-        JFrame tableWindow;
+    public void actionPerformed(ActionEvent e){
+        int index = -1;
+
+        for(int i=0; i<allButtons.length; i++){
+            if(e.getSource().equals(allButtons[i])){
+                index = i;
+            }
+        }
+        if(index == 3){
+            askInput = true;
+            userInput = askInputUser();
+        }
+        if(tableOpened){
+            tableWindow.dispose();
+            tableOpened = false;
+        }
+        runQuery(index);
+    }
+    public void makeTable(ResultSet resultSet, int index) throws Exception {
+        tableOpened = true;
         JTable table;
 
-        tableWindow = new JFrame();
-
-        // Frame Title
-        tableWindow.setTitle(resultTableName);//change to preferred display name
+        tableWindow = new JFrame(buttonTitle[index]);
 
         //get the data from result set
         List<Object[]> data = new ArrayList<>();
@@ -238,27 +258,10 @@ public class QueryPage implements ActionListener {
         tableWindow.setLocation(dim.width/2-tableWindow.getSize().width/2, dim.height/2-tableWindow.getSize().height/2);
         // Frame Visible = true
         tableWindow.setVisible(true);
-
-
-    }
-    public void actionPerformed(ActionEvent e){
-        int index = -1;
-
-        for(int i=0; i<allButtons.length; i++){
-            if(e.getSource().equals(allButtons[i])){
-                index = i;
-            }
-        }
-        if(index == 3){
-            askInput = true;
-            userInput = askInputUser();
-        }
-        runQuery(allQueries[index]);
     }
     public void setUsername(String theUsername){
         username = theUsername;
     }
-
     public void setPassword(String thePassword){
         password = thePassword;
     }
