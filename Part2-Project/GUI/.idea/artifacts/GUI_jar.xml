@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GUI:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GUI_jar</output-path>
+    <root id="archive" name="GUI.jar">
+      <element id="module-output" name="GUI" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/mssql-jdbc-11.2.0.jre11.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
