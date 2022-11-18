@@ -27,6 +27,10 @@ public class QueryPage implements ActionListener {
     private String[] buttonTitle;
     private int frameWidth = 500;
     private int frameHeight = 500;
+
+    private boolean askInput;
+
+    private String userInput;
     public QueryPage() {
         connectDatabase();
         pageSetup();
@@ -70,7 +74,7 @@ public class QueryPage implements ActionListener {
         String[] theButtonTitle = {
             "City That Has Multiple Teams",
             "Highest Score a Team Has Achieved At Home",
-            "Players That Only Has Been On 1 Team",
+            "Players That Never Change Any Team",
             "Which Team Does the Player 'X' Played For Each Season"
         };
         buttonTitle = theButtonTitle;
@@ -95,7 +99,7 @@ public class QueryPage implements ActionListener {
                     "group by teamID, teamName\n" +
                     "order by teamID desc;",
 
-            "select player.playerID, playerName, count(team.teamID) as TeamCount\n" +
+            "select player.playerID, playerName\n" +
                     "from player\n" +
                     "join signed on player.playerID = signed.playerID\n" +
                     "join team on team.teamID = signed.teamID\n" +
@@ -107,7 +111,7 @@ public class QueryPage implements ActionListener {
                     "join compete on player.playerID = compete.playerID \n" +
                     "      and season.season_year = compete.season_year\n" +
                     "join team on team.teamID = compete.teamID\n" +
-                    "where playerName = 'Kobe Bryant';"
+                    "where playerName = ?;"
         };
 
         allQueries = theQueries;
@@ -165,14 +169,19 @@ public class QueryPage implements ActionListener {
                             + "loginTimeout=30;";
 
             connection = DriverManager.getConnection(connectionUrl);
-            Statement statement = connection.createStatement();
+            PreparedStatement statement = connection.prepareStatement(selectSql);
 
             ResultSet resultSet = null;
 
+            if(askInput){
+                statement.setString(1,userInput);
+            }
             // Create and execute a SELECT SQL statement.
-            resultSet = statement.executeQuery(selectSql);
+            resultSet = statement.executeQuery();
 
             makeTable(resultSet);
+
+            askInput = false;
 
             connection.close();
             statement.close();
@@ -182,6 +191,9 @@ public class QueryPage implements ActionListener {
         }
     }
 
+    private String askInputUser(){
+        return JOptionPane.showInputDialog("Please Enter A Name");
+    }
     public void makeTable(ResultSet resultSet) throws Exception {
         JFrame tableWindow;
         JTable table;
@@ -229,21 +241,6 @@ public class QueryPage implements ActionListener {
 
 
     }
-
-    public void queryButtons() {
-        JButton buttonCity = new JButton(new AbstractAction("Show All Cities") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                selectSql = "select * from city";
-                resultTableName = "All Cities";
-                //runQuery();
-            }
-        });
-        buttonCity.setBounds(0, 0, 350, 50);
-        buttonCity.setHorizontalAlignment(SwingConstants.LEFT);
-        panel.add(buttonCity);
-    }
-
     public void actionPerformed(ActionEvent e){
         int index = -1;
 
@@ -252,9 +249,12 @@ public class QueryPage implements ActionListener {
                 index = i;
             }
         }
+        if(index == 3){
+            askInput = true;
+            userInput = askInputUser();
+        }
         runQuery(allQueries[index]);
     }
-
     public void setUsername(String theUsername){
         username = theUsername;
     }

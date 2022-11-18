@@ -26,7 +26,7 @@ group by teamID, teamName
 order by teamID desc;
 
 /*players stay in one team*/
-select player.playerID, playerName, count(team.teamID) as TeamCount
+select player.playerID, playerName
 from player
 join signed on player.playerID = signed.playerID
 join team on team.teamID = signed.teamID
@@ -35,12 +35,12 @@ having count(team.teamID) = 1
 
 /* A player play on which seasons and play on what team for each of that season. 
 Search by the player name*/
-SELECT player.playerName, teamName, compete.season_year from player
+SELECT player.playerName, player.playerID, compete.season_year from player
 join season on season.playerID = player.playerID
 join compete on player.playerID = compete.playerID 
       and season.season_year = compete.season_year
 join team on team.teamID = compete.teamID
-where playerName = 'Kobe Bryant';
+where player.playerID = '977';
 
 
 /*teams on each conference*/
