@@ -1,7 +1,5 @@
 use cs3380;
 
-/*drop table if exists standings;*/
-
 drop table if exists generate;
 drop table if exists gameData;
 drop table if exists leaderboard;
@@ -12,7 +10,7 @@ drop table if exists team;
 drop table if exists city;
 drop table if exists conference;
 drop table if exists player;
-/*drop table if exists play;*/
+
 
 create table city(
    cityID integer primary key IDENTITY (1,1),
@@ -87,16 +85,6 @@ create table leaderboard(
    FOREIGN key ("teamID") REFERENCES "team"("teamID")
 );
 
-/*
-create table standings(
-   "teamID" INTEGER,
-   "standingsDate" INTEGER,
-   PRIMARY key ("teamID", "standingsDate"),
-   FOREIGN KEY ("teamID") REFERENCES "team"("teamID"),
-   FOREIGN KEY ("standingsDate") REFERENCES "leaderboard"("standingsDate")
-);*/
-
-
 create table player(
    playerID integer primary key,
    playerName varchar(50) not null
@@ -125,14 +113,6 @@ create table signed(
    FOREIGN KEY ("teamID") REFERENCES "team"("teamID")
 );
 
-/*
-create table play(
-   "playerID" INTEGER,
-   "season_year" INTEGER,
-   PRIMARY KEY ("playerID"),
-   FOREIGN KEY ("playerID") REFERENCES "player"("playerID"),
-   
-);*/
 
 
 
