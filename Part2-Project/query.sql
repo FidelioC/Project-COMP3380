@@ -40,7 +40,7 @@ join season on season.playerID = player.playerID
 join compete on player.playerID = compete.playerID 
       and season.season_year = compete.season_year
 join team on team.teamID = compete.teamID
-where player.playerName = 'Kobe Bryant';
+where player.playerName like '%Kobe Bryant%';
 
 
 /*teams on each conference*/

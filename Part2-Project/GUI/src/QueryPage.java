@@ -113,7 +113,7 @@ public class QueryPage implements ActionListener {
                     "join compete on player.playerID = compete.playerID \n" +
                     "and season.season_year = compete.season_year\n" +
                     "join team on team.teamID = compete.teamID\n" +
-                    "where playerName = ?;",
+                    "where playerName like ?;",
 
             "SELECT teamName, conference\n" +
                     "from team\n" +
@@ -196,7 +196,7 @@ public class QueryPage implements ActionListener {
             ResultSet resultSet = null;
 
             if(askInput){
-                statement.setString(1,userInput);
+                statement.setString(1,"%" + userInput + "%");
             }
             // Create and execute a SELECT SQL statement.
             resultSet = statement.executeQuery();
