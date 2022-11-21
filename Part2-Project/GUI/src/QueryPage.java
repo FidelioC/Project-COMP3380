@@ -71,6 +71,24 @@ public class QueryPage implements ActionListener {
         frame.add(topPanel,BorderLayout.NORTH);
     }
 
+    private void insertAllButtons(){
+        setAllButtonsTitle();
+        allButtons = new JButton[totalQueries];
+        int xPos = 0;
+        int yPos = 0;
+        int buttonHeight = frameHeight/allButtons.length;
+        int buttonWidth = frameWidth;
+
+        for(int i=0; i<allButtons.length; i++){
+            allButtons[i] = new JButton(buttonTitle[i]);
+            allButtons[i].setBounds(xPos, yPos, buttonWidth, buttonHeight);
+            allButtons[i].setHorizontalAlignment(SwingConstants.CENTER);
+            allButtons[i].setFocusable(false);
+            panel.add(allButtons[i]);
+            yPos += buttonHeight;
+        }
+    }
+
     private void connectDatabase(){
         Properties prop = new Properties();
         String fileName = "auth.cfg";
@@ -95,23 +113,7 @@ public class QueryPage implements ActionListener {
             System.exit(1);
         }
     }
-    private void insertAllButtons(){
-        setAllButtonsTitle();
-        allButtons = new JButton[totalQueries];
-        int xPos = 0;
-        int yPos = 0;
-        int buttonHeight = frameHeight/allButtons.length;
-        int buttonWidth = frameWidth;
 
-        for(int i=0; i<allButtons.length; i++){
-            allButtons[i] = new JButton(buttonTitle[i]);
-            allButtons[i].setBounds(xPos, yPos, buttonWidth, buttonHeight);
-            allButtons[i].setHorizontalAlignment(SwingConstants.CENTER);
-            allButtons[i].setFocusable(false);
-            panel.add(allButtons[i]);
-            yPos += buttonHeight;
-        }
-    }
     public void runQuery(int index) {
         try {
             selectSql = allQueries[index];

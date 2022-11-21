@@ -1,0 +1,31 @@
+TEAM_ID,ABBREVIATION,TEAM_NAME,NICKNAME,CONFERENCE_ID,ARENA,ARENACAPACITY,DLEAGUEAFFILIATION,HEADCOACH,GENERALMANAGER,OWNER,CITY_ID,YEARFOUNDED
+1610612737,ATL,Atlanta,Hawks,1,State Farm Arena,18729,Erie Bayhawks,Lloyd Pierce,Travis Schlenk,Tony Ressler,1,1949
+1610612738,BOS,Boston,Celtics,1,TD Garden,18624,Maine Red Claws,Brad Stevens,Danny Ainge,Wyc Grousbeck,2,1946
+1610612751,BKN,Brooklyn,Nets,1,Barclays Center,,Long Island Nets,Kenny Atkinson,Sean Marks,Joe Tsai,3,1976
+1610612766,CHA,Charlotte,Hornets,1,Spectrum Center,19026,Greensboro Swarm,James Borrego,Mitch Kupchak,Michael Jordan,4,1988
+1610612741,CHI,Chicago,Bulls,1,United Center,21711,Windy City Bulls,Jim Boylen,Gar Forman,Jerry Reinsdorf,5,1966
+1610612739,CLE,Cleveland,Cavaliers,1,Quicken Loans Arena,20562,Canton Charge,John Beilein,Koby Altman,Dan Gilbert,6,1970
+1610612742,DAL,Dallas,Mavericks,2,American Airlines Center,19200,Texas Legends,Rick Carlisle,Donnie Nelson,Mark Cuban,7,1980
+1610612743,DEN,Denver,Nuggets,2,Pepsi Center,19099,No Affiliate,Michael Malone,Tim Connelly,Stan Kroenke,8,1976
+1610612765,DET,Detroit,Pistons,1,Little Caesars Arena,21000,Grand Rapids Drive,Dwane Casey,Ed Stefanski,Tom Gores,9,1948
+1610612744,GSW,Golden State,Warriors,2,Chase Center,19596,Santa Cruz Warriors,Steve Kerr,Bob Myers,Joe Lacob,10,1946
+1610612745,HOU,Houston,Rockets,2,Toyota Center,18104,Rio Grande Valley Vipers,Mike D'Antoni,Daryl Morey,Tilman Fertitta,11,1967
+1610612754,IND,Indiana,Pacers,1,Bankers Life Fieldhouse,18345,Fort Wayne Mad Ants,Nate McMillan,Kevin Pritchard,Herb Simon,12,1976
+1610612747,LAL,L.A. Lakers,Lakers,2,Staples Center,19060,South Bay Lakers,Frank Vogel,Rob Pelinka,Jerry Buss Family Trust,13,1948
+1610612746,LAC,L.A. Clippers,Clippers,2,Staples Center,19060,Agua Caliente Clippers of Ontario,Doc Rivers,Michael Winger,Steve Ballmer,13,1970
+1610612763,MEM,Memphis,Grizzlies,2,FedExForum,18119,Memphis Hustle,Taylor Jenkins,Zach Kleiman,Robert Pera,14,1995
+1610612748,MIA,Miami,Heat,1,AmericanAirlines Arena,19600,Sioux Falls Skyforce,Erik Spoelstra,Pat Riley,Micky Arison,15,1988
+1610612749,MIL,Milwaukee,Bucks,1,Fiserv Forum,17500,Wisconsin Herd,Mike Budenholzer,Jon Horst,Wesley Edens & Marc Lasry,16,1968
+1610612750,MIN,Minnesota,Timberwolves,2,Target Center,19356,Iowa Wolves,Ryan Saunders,Scott Layden,Glen Taylor,17,1989
+1610612740,NOP,New Orleans,Pelicans,1,Smoothie King Center,,No Affiliate,Alvin Gentry,Trajan Langdon,Tom Benson,18,2002
+1610612752,NYK,New York,Knicks,1,Madison Square Garden,19763,Westchester Knicks,David Fizdale,Steve Mills,Cablevision (James Dolan),19,1946
+1610612760,OKC,Oklahoma City,Thunder,2,Chesapeake Energy Arena,19163,Oklahoma City Blue,Billy Donovan,Sam Presti,Clay Bennett,20,1967
+1610612753,ORL,Orlando,Magic,1,Amway Center,0,Lakeland Magic,Steve Clifford,John Hammond,Rick DeVos,21,1989
+1610612755,PHI,Philadelphia,76ers,1,Wells Fargo Center,,Delaware Blue Coats,Brett Brown,Elton Brand,Joshua Harris,22,1949
+1610612756,PHX,Phoenix,Suns,2,Talking Stick Resort Arena,,Northern Arizona Suns,Monty Williams,James Jones,Robert Sarver,23,1968
+1610612757,POR,Portland,Trail Blazers,2,Moda Center,19980,No Affiliate,Terry Stotts,Neil Olshey,Paul Allen,24,1970
+1610612758,SAC,Sacramento,Kings,2,Cleveland,17500,Stockton Kings,Luke Walton,Vlade Divac,Vivek Ranadive,25,1948
+1610612759,SAS,San Antonio,Spurs,2,AT&T Center,18694,Austin Spurs,Gregg Popovich,Brian Wright,Peter Holt,26,1976
+1610612761,TOR,Toronto,Raptors,1,Scotiabank Arena,19800,Raptors 905,Nick Nurse,Masai Ujiri,Maple Leaf Sports and Entertainment,27,1995
+1610612762,UTA,Utah,Jazz,2,Vivint Smart Home Arena,20148,Salt Lake City Stars,Quin Snyder,Dennis Lindsey,Greg Miller,28,1974
+1610612764,WAS,Washington,Wizards,1,Capital One Arena,20647,Capital City Go-Go,Scott Brooks,Tommy Sheppard,Ted Leonsis,29,1961

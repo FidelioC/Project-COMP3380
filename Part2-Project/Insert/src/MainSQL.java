@@ -26,8 +26,8 @@ public class MainSQL {
             System.out.println("Error reading config file.");
             System.exit(1);
         }
-        String username = "ciandyf";
-        String password = "7934456";
+        String username = (prop.getProperty("username"));;
+        String password = (prop.getProperty("password"));
 
         if (username == null || password == null){
             System.out.println("Username or password not provided.");
