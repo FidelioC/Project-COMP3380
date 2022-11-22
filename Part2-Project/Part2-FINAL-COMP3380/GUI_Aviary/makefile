@@ -7,7 +7,7 @@ QueryPage.class: QueryPage.java
 	javac QueryPage.java
 
 run: Main.class
-	java -cp .:mssql-jdbc-11.20.jre11.jar Main
+	java -cp .:mssql-jdbc-11.2.0.jre11.jar Main
 
 clean:
 	rm Main.class
