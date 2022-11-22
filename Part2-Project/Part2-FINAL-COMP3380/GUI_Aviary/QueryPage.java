@@ -191,8 +191,8 @@ public class QueryPage implements ActionListener {
                 "List of Teams On Each Conference",
                 "Top 5 Team In East Conference That Has Highest Assists When Playing At Home",
                 "Total Wins of Each Team At Home from 2004-2020",
-                "Team 'X' Regular Season Records",
-                "Team 'X' Pre-Season Records",
+                "Team 'X' Regular Season Records Each Year",
+                "Team 'X' Pre-Season Records Each Year",
                 "The roster of 'X' team on 'Y' year"
         };
         buttonTitle = theButtonTitle;

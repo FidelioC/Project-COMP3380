@@ -8,7 +8,7 @@
 
 ## CREATING TABLES
 6. Go inside the Part2-FINAL-COMP3380 folder.
-7. To create tables, go to the CreateTable_Aviary.
+7. To create tables, go to the CreateTable_Aviary folder.
 8. Once inside the folder, CHANGE THE auth.cfg file to your username and password.
 9. TYPE 'make' to BUILD the java class.
 10. TYPE 'make run' to RUN the java file.
